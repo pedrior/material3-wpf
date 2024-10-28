@@ -72,8 +72,7 @@
                 Command="{Binding NavigateCommand, Mode=OneTime}"
                 CommandParameter="{x:Type viewModels:HomeViewModel}"
                 Content="Home"
-                IsChecked="True"
-                IsThreeState="True" />
+                IsChecked="True" />
 
             <md3:NavigationRailItem
                 md3:IconAssist.SelectIcon="Apps"
