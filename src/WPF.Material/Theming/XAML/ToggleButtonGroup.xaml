@@ -1,0 +1,112 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:assists="clr-namespace:WPF.Material.Assists"
+    xmlns:controls="clr-namespace:WPF.Material.Controls"
+    xmlns:typography="clr-namespace:WPF.Material.Typography">
+
+    <Style TargetType="{x:Type controls:ToggleButtonGroup}">
+        <Setter Property="Orientation" Value="Horizontal" />
+        <Setter Property="Spacing" Value="0.0" />
+        <Setter Property="InnerRadius" Value="0.0" />
+        <Setter Property="SelectionMode" Value="Single" />
+        <Setter Property="RequireSelection" Value="False" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <controls:SpacedPanel Orientation="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ToggleButtonGroup}, AncestorLevel=1}, Path=Orientation}" Spacing="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ToggleButtonGroup}, AncestorLevel=1}, Path=Spacing}" />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:ToggleButtonGroup}">
+                    <controls:Container
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+
+                        <ItemsPresenter
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </controls:Container>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type controls:ToggleButton}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource Material.Colors.OnSurface}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Material.Colors.Outline}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Padding" Value="16,0" />
+        <Setter Property="IsThreeState" Value="False" />
+        <Setter Property="assists:ShapeAssist.Corner" Value="All" />
+        <Setter Property="assists:TypographyAssist.Style" Value="{typography:TypeStyle Style=LabelLarge, Height=0}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:ToggleButton}">
+                    <controls:Ripple Foreground="{TemplateBinding Foreground}" OutlineGeometry="{Binding ElementName=Container, Path=RenderedGeometry}">
+                        <controls:Container
+                            x:Name="Container"
+                            assists:InteractionAssist.IsDragged="{TemplateBinding assists:InteractionAssist.IsDragged}"
+                            assists:InteractionAssist.IsEnabled="{TemplateBinding IsEnabled}"
+                            assists:InteractionAssist.IsHovered="{TemplateBinding IsMouseOver}"
+                            assists:InteractionAssist.IsPressed="{TemplateBinding IsPressed}"
+                            assists:ShapeAssist.Corner="{TemplateBinding assists:ShapeAssist.Corner}"
+                            assists:ShapeAssist.Family="{TemplateBinding assists:ShapeAssist.Family}"
+                            assists:ShapeAssist.Radius="{TemplateBinding assists:ShapeAssist.Radius}"
+                            assists:ShapeAssist.Style="{TemplateBinding assists:ShapeAssist.Style}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Foreground="{TemplateBinding Foreground}">
+
+                            <StackPanel
+                                x:Name="Content"
+                                Margin="{TemplateBinding Padding}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+
+                                <ContentPresenter
+                                    VerticalAlignment="Center"
+                                    Block.LineHeight="20"
+                                    Block.LineStackingStrategy="BlockLineHeight"
+                                    Content="{TemplateBinding Content}"
+                                    ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                    ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                    RecognizesAccessKey="True"
+                                    TextBlock.Foreground="{TemplateBinding Foreground}"
+                                    TextBlock.TextAlignment="Center" />
+                            </StackPanel>
+                        </controls:Container>
+                    </controls:Ripple>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <!--  Checked  -->
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Material.Colors.SecondaryContainer}" />
+                <Setter Property="Foreground" Value="{DynamicResource Material.Colors.OnSecondaryContainer}" />
+            </Trigger>
+
+            <!--  Disabled  -->
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource Material.Colors.OnSurface}" />
+                <Setter Property="Foreground" Value="{DynamicResource Material.Colors.OnSurface}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>
