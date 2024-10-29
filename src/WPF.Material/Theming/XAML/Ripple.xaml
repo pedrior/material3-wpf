@@ -8,13 +8,12 @@
         <Setter Property="VerticalAlignment" Value="Stretch" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="ClipToBounds" Value="False" />
         <Setter Property="Focusable" Value="False" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:Ripple}">
-                    <Grid ClipToBounds="{TemplateBinding ClipToBounds}">
+                    <controls:OverlapPanel>
                         <ContentPresenter
                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -26,7 +25,7 @@
                         <Canvas Clip="{TemplateBinding OutlineGeometry}" IsHitTestVisible="False">
                             <Ellipse x:Name="PART_Ellipse" Fill="{TemplateBinding Foreground}" />
                         </Canvas>
-                    </Grid>
+                    </controls:OverlapPanel>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
