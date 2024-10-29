@@ -10,7 +10,7 @@ internal sealed class ThicknessToDoubleConverter : MarkupExtension, IValueConver
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return value is not Thickness thickness
-            ? Binding.DoNothing
+            ? DependencyProperty.UnsetValue
             : thickness.Left;
     }
 
