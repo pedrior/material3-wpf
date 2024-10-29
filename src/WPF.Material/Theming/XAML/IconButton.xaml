@@ -206,7 +206,6 @@
             </Setter.Value>
         </Setter>
         <Style.Triggers>
-
             <!--  Checked  -->
             <MultiTrigger>
                 <MultiTrigger.Conditions>

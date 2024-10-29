@@ -9,7 +9,6 @@
         <Setter Property="FontSize" Value="18" />
         <Setter Property="FontWeight" Value="Regular" />
         <Setter Property="Focusable" Value="False" />
-        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="IsFilled" Value="False" />
         <Setter Property="SymbolStyle" Value="Rounded" />
         <Setter Property="Template">

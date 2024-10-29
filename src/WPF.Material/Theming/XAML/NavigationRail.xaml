@@ -123,7 +123,6 @@
         <Setter Property="Foreground" Value="{DynamicResource Material.Colors.OnSurfaceVariant}" />
         <Setter Property="Height" Value="56" />
         <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="IsThreeState" Value="False" />
         <Setter Property="IsChecked" Value="False" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="assists:IconAssist.Size" Value="24" />

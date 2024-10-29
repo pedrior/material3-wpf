@@ -7,8 +7,6 @@
 
     <Style TargetType="{x:Type controls:ToggleButtonGroup}">
         <Setter Property="Orientation" Value="Horizontal" />
-        <Setter Property="Spacing" Value="0.0" />
-        <Setter Property="InnerRadius" Value="0.0" />
         <Setter Property="SelectionMode" Value="Single" />
         <Setter Property="RequireSelection" Value="False" />
         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -43,7 +41,6 @@
         <Setter Property="Height" Value="40" />
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Padding" Value="16,0" />
-        <Setter Property="IsThreeState" Value="False" />
         <Setter Property="assists:ShapeAssist.Corner" Value="All" />
         <Setter Property="assists:TypographyAssist.Style" Value="{typography:TypeStyle Style=LabelLarge, Height=0}" />
         <Setter Property="Template">
