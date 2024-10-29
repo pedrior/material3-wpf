@@ -127,11 +127,11 @@
         <Setter Property="IsChecked" Value="False" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="assists:IconAssist.Size" Value="24" />
-        <Setter Property="assists:IconAssist.FillOnDeselect" Value="True" />
-        <Setter Property="assists:IconAssist.FillOnPressed" Value="True" />
-        <Setter Property="assists:IconAssist.WeightOnHover" Value="DemiBold" />
-        <Setter Property="assists:IconAssist.WeightOnPressed" Value="Normal" />
-        <Setter Property="assists:IconAssist.WeightOnDeselect" Value="DemiBold" />
+        <Setter Property="assists:IconAssist.FillOnPressing" Value="True" />
+        <Setter Property="assists:IconAssist.FillOnSelecting" Value="True" />
+        <Setter Property="assists:IconAssist.WeightOnHovering" Value="DemiBold" />
+        <Setter Property="assists:IconAssist.WeightOnPressing" Value="Normal" />
+        <Setter Property="assists:IconAssist.WeightOnSelecting" Value="DemiBold" />
         <Setter Property="assists:TypographyAssist.Style" Value="{typography:TypeStyle Style=LabelMedium, Height=0, Weight=DemiBold}" />
         <Setter Property="Template">
             <Setter.Value>
@@ -166,10 +166,10 @@
                                         x:Name="Icon"
                                         VerticalAlignment="Center"
                                         FontSize="{TemplateBinding assists:IconAssist.Size}"
-                                        FontWeight="{TemplateBinding assists:IconAssist.WeightOnSelect}"
+                                        FontWeight="{TemplateBinding assists:IconAssist.Weight}"
                                         Foreground="{TemplateBinding Foreground}"
-                                        IsFilled="{TemplateBinding assists:IconAssist.FillOnSelect}"
-                                        Symbol="{TemplateBinding assists:IconAssist.SelectIcon}"
+                                        IsFilled="{TemplateBinding assists:IconAssist.Fill}"
+                                        Symbol="{TemplateBinding assists:IconAssist.Icon}"
                                         SymbolStyle="{TemplateBinding assists:IconAssist.Style}" />
                                 </controls:Container>
                             </controls:Ripple>
@@ -213,32 +213,23 @@
 
                         <!--  Icon  -->
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="Icon" Property="Symbol" Value="{Binding Path=(assists:IconAssist.DeselectIcon), RelativeSource={RelativeSource TemplatedParent}}" />
-                            <Setter TargetName="Icon" Property="IsFilled" Value="{Binding Path=(assists:IconAssist.FillOnDeselect), RelativeSource={RelativeSource TemplatedParent}}" />
-                            <Setter TargetName="Icon" Property="FontWeight" Value="{Binding Path=(assists:IconAssist.WeightOnDeselect), RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="Icon" Property="Symbol" Value="{Binding Path=(assists:IconAssist.IconOnSelecting), RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="Icon" Property="IsFilled" Value="{Binding Path=(assists:IconAssist.FillOnSelecting), RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="Icon" Property="FontWeight" Value="{Binding Path=(assists:IconAssist.WeightOnSelecting), RelativeSource={RelativeSource TemplatedParent}}" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Icon" Property="FontWeight" Value="{Binding Path=(assists:IconAssist.WeightOnHover), RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="Icon" Property="FontWeight" Value="{Binding Path=(assists:IconAssist.WeightOnHovering), RelativeSource={RelativeSource TemplatedParent}}" />
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsChecked" Value="False" />
                                 <Condition Property="IsMouseOver" Value="True" />
-                                <Condition Property="assists:IconAssist.FillOnSelect" Value="False" />
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Icon" Property="IsFilled" Value="{Binding Path=(assists:IconAssist.FillOnHover), RelativeSource={RelativeSource TemplatedParent}}" />
-                        </MultiTrigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsChecked" Value="True" />
-                                <Condition Property="IsMouseOver" Value="True" />
-                                <Condition Property="assists:IconAssist.FillOnDeselect" Value="False" />
-                            </MultiTrigger.Conditions>
-                            <Setter TargetName="Icon" Property="IsFilled" Value="{Binding Path=(assists:IconAssist.FillOnHover), RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="Icon" Property="IsFilled" Value="{Binding Path=(assists:IconAssist.FillOnHovering), RelativeSource={RelativeSource TemplatedParent}}" />
                         </MultiTrigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="Icon" Property="IsFilled" Value="{Binding Path=(assists:IconAssist.FillOnPressed), RelativeSource={RelativeSource TemplatedParent}}" />
-                            <Setter TargetName="Icon" Property="FontWeight" Value="{Binding Path=(assists:IconAssist.WeightOnPressed), RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="Icon" Property="IsFilled" Value="{Binding Path=(assists:IconAssist.FillOnPressing), RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="Icon" Property="FontWeight" Value="{Binding Path=(assists:IconAssist.WeightOnPressing), RelativeSource={RelativeSource TemplatedParent}}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

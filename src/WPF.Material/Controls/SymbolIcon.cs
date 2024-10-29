@@ -1,4 +1,5 @@
-﻿using WPF.Material.Environment;
+﻿using WPF.Material.Assists;
+using WPF.Material.Environment;
 
 namespace WPF.Material.Controls;
 
@@ -14,7 +15,7 @@ public class SymbolIcon : Control
         nameof(Symbol),
         typeof(Symbol?),
         typeof(SymbolIcon),
-        new PropertyMetadata(DefaultSymbol, null, CoerceSymbol));
+        new PropertyMetadata(null, null, CoerceSymbol));
 
     /// <summary>
     /// Identifies the <see cref="SymbolStyle"/> dependency property.
@@ -34,8 +35,6 @@ public class SymbolIcon : Control
         typeof(SymbolIcon),
         new PropertyMetadata(false));
 
-    private const Symbol DefaultSymbol = Controls.Symbol.Category;
-    
     /// <summary>
     /// Initializes static members of the <see cref="SymbolIcon"/> class.
     /// </summary>
@@ -78,7 +77,16 @@ public class SymbolIcon : Control
         get => (bool)GetValue(IsFilledProperty);
         set => SetValue(IsFilledProperty, value);
     }
-    
-    private static object CoerceSymbol(DependencyObject element, object? value) => 
-        value ?? (((SymbolIcon)element).Symbol ?? DefaultSymbol);
+
+    private static object? CoerceSymbol(DependencyObject element, object? value)
+    {
+        // If the incoming symbol is null, we try to get the symbol previously set. If the symbol is still null,
+        // try to get the fallback symbol from the IconAssist attached properties.
+        var symbol = value ?? element.GetValue(SymbolProperty);
+
+        // We're not covering the hovering and pressing states here, as they are interactive states that are triggered
+        // by mouse or keyboard input. Also, returning null here is fine, as the CodepointToSymbolConverter will handle
+        // the null value and return a DependencyProperty.UnsetValue, which will be ignored by the converter.
+        return symbol ?? IconAssist.GetIcon(element) ?? IconAssist.GetIconOnSelecting(element);
+    }
 }

@@ -103,13 +103,14 @@
 
                         <!--  Icon  -->
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Icon" Property="Symbol" Value="{Binding Path=(assists:IconAssist.HoverIcon), RelativeSource={RelativeSource TemplatedParent}}" />
-                            <Setter TargetName="Icon" Property="IsFilled" Value="{Binding Path=(assists:IconAssist.FillOnHover), RelativeSource={RelativeSource TemplatedParent}}" />
-                            <Setter TargetName="Icon" Property="FontWeight" Value="{Binding Path=(assists:IconAssist.WeightOnHover), RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="Icon" Property="Symbol" Value="{Binding Path=(assists:IconAssist.IconOnHovering), RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="Icon" Property="IsFilled" Value="{Binding Path=(assists:IconAssist.FillOnHovering), RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="Icon" Property="FontWeight" Value="{Binding Path=(assists:IconAssist.WeightOnHovering), RelativeSource={RelativeSource TemplatedParent}}" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="Icon" Property="IsFilled" Value="{Binding Path=(assists:IconAssist.FillOnPressed), RelativeSource={RelativeSource TemplatedParent}}" />
-                            <Setter TargetName="Icon" Property="FontWeight" Value="{Binding Path=(assists:IconAssist.WeightOnPressed), RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="Icon" Property="Symbol" Value="{Binding Path=(assists:IconAssist.IconOnPressing), RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="Icon" Property="IsFilled" Value="{Binding Path=(assists:IconAssist.FillOnPressing), RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Setter TargetName="Icon" Property="FontWeight" Value="{Binding Path=(assists:IconAssist.WeightOnPressing), RelativeSource={RelativeSource TemplatedParent}}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

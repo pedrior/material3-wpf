@@ -57,10 +57,10 @@
                 <md3:NavigationRailActions>
                     <md3:ToggleIconButton
                         x:Name="ThemeToggleButton"
-                        md3:IconAssist.DeselectIcon="LightMode"
-                        md3:IconAssist.FillOnHover="True"
-                        md3:IconAssist.FillOnPressed="True"
-                        md3:IconAssist.SelectIcon="DarkMode"
+                        md3:IconAssist.FillOnHovering="True"
+                        md3:IconAssist.FillOnPressing="True"
+                        md3:IconAssist.Icon="DarkMode"
+                        md3:IconAssist.IconOnSelecting="LightMode"
                         Command="{Binding SwitchAppThemeCommand, Mode=OneTime}"
                         IsChecked="{Binding IsDarkTheme, Mode=OneTime}"
                         ToolTip="{Binding ElementName=ThemeToggleButton, Path=IsChecked, Converter={converters:ThemeToolTipConverter OnLightTooltip={StaticResource SwitchToDarkThemeTooltip}, OnDarkTooltip={StaticResource SwitchToLightThemeTooltip}}}" />
@@ -68,20 +68,20 @@
             </md3:NavigationRail.BottomActionsContent>
 
             <md3:NavigationRailItem
-                md3:IconAssist.DeselectIcon="Home"
+                md3:IconAssist.Icon="Home"
                 Command="{Binding NavigateCommand, Mode=OneTime}"
                 CommandParameter="{x:Type viewModels:HomeViewModel}"
                 Content="Home"
                 IsChecked="True" />
 
             <md3:NavigationRailItem
-                md3:IconAssist.SelectIcon="Apps"
+                md3:IconAssist.Icon="Apps"
                 Command="{Binding NavigateCommand, Mode=OneTime}"
                 CommandParameter="{x:Type viewModels:GetStartedViewModel}"
                 Content="Get started" />
 
             <md3:NavigationRailItem
-                md3:IconAssist.SelectIcon="AddCircle"
+                md3:IconAssist.Icon="AddCircle"
                 Command="{Binding NavigateCommand, Mode=OneTime}"
                 CommandParameter="{x:Type viewModels:ComponentsViewModel}"
                 Content="Components" />

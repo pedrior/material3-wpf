@@ -7,8 +7,12 @@ internal sealed class CodepointToStringConverter : MarkupExtension, IValueConver
 {
     public override object ProvideValue(IServiceProvider services) => this;
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
-        value is null ? null : char.ConvertFromUtf32((int)value);
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        return value is null
+            ? DependencyProperty.UnsetValue
+            : char.ConvertFromUtf32((int)value);
+    }
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         throw new NotSupportedException();

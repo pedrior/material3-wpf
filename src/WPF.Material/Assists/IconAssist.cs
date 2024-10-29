@@ -14,34 +14,7 @@ public static class IconAssist
         "Icon",
         typeof(Symbol?),
         typeof(IconAssist),
-        new PropertyMetadata(null));
-
-    /// <summary>
-    /// Identifies the HoverIcon attached property.
-    /// </summary>
-    public static readonly DependencyProperty HoverIconProperty = DependencyProperty.RegisterAttached(
-        "HoverIcon",
-        typeof(Symbol?),
-        typeof(IconAssist),
-        new PropertyMetadata(null));
-
-    /// <summary>
-    /// Identifies the SelectIcon attached property.
-    /// </summary>
-    public static readonly DependencyProperty SelectIconProperty = DependencyProperty.RegisterAttached(
-        "SelectIcon",
-        typeof(Symbol?),
-        typeof(IconAssist),
-        new PropertyMetadata(null));
-    
-    /// <summary>
-    /// Identifies the DeselectIcon attached property.
-    /// </summary>
-    public static readonly DependencyProperty DeselectIconProperty = DependencyProperty.RegisterAttached(
-        "DeselectIcon",
-        typeof(Symbol?),
-        typeof(IconAssist),
-        new PropertyMetadata(null));
+        new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
 
     /// <summary>
     /// Identifies the Size attached property.
@@ -53,55 +26,10 @@ public static class IconAssist
         new PropertyMetadata(18.0));
 
     /// <summary>
-    /// Identifies the Style attached property.
-    /// </summary>
-    public static readonly DependencyProperty StyleProperty = DependencyProperty.RegisterAttached(
-        "Style",
-        typeof(SymbolStyle),
-        typeof(IconAssist),
-        new FrameworkPropertyMetadata(SymbolStyle.Rounded, FrameworkPropertyMetadataOptions.Inherits));
-
-    /// <summary>
     /// Identifies the Fill attached property.
     /// </summary>
     public static readonly DependencyProperty FillProperty = DependencyProperty.RegisterAttached(
         "Fill",
-        typeof(bool),
-        typeof(IconAssist),
-        new PropertyMetadata(false));
-
-    /// <summary>
-    /// Identifies the FillOnHover attached property.
-    /// </summary>
-    public static readonly DependencyProperty FillOnHoverProperty = DependencyProperty.RegisterAttached(
-        "FillOnHover",
-        typeof(bool),
-        typeof(IconAssist),
-        new PropertyMetadata(false));
-
-    /// <summary>
-    /// Identifies the FillOnPressed attached property.
-    /// </summary>
-    public static readonly DependencyProperty FillOnPressedProperty = DependencyProperty.RegisterAttached(
-        "FillOnPressed",
-        typeof(bool),
-        typeof(IconAssist),
-        new PropertyMetadata(false));
-
-    /// <summary>
-    /// Identifies the FillOnSelect attached property.
-    /// </summary>
-    public static readonly DependencyProperty FillOnSelectProperty = DependencyProperty.RegisterAttached(
-        "FillOnSelect",
-        typeof(bool),
-        typeof(IconAssist),
-        new PropertyMetadata(false));
-    
-    /// <summary>
-    /// Identifies the FillOnDeselect attached property.
-    /// </summary>
-    public static readonly DependencyProperty FillOnDeselectProperty = DependencyProperty.RegisterAttached(
-        "FillOnDeselect",
         typeof(bool),
         typeof(IconAssist),
         new PropertyMetadata(false));
@@ -116,50 +44,95 @@ public static class IconAssist
         new PropertyMetadata(FontWeights.Normal));
 
     /// <summary>
-    /// Identifies the WeightOnHover attached property.
+    /// Identifies the Style attached property.
     /// </summary>
-    public static readonly DependencyProperty WeightOnHoverProperty = DependencyProperty.RegisterAttached(
-        "WeightOnHover",
+    public static readonly DependencyProperty StyleProperty = DependencyProperty.RegisterAttached(
+        "Style",
+        typeof(SymbolStyle),
+        typeof(IconAssist),
+        new FrameworkPropertyMetadata(SymbolStyle.Rounded, FrameworkPropertyMetadataOptions.Inherits));
+
+    /// <summary>
+    /// Identifies the IconOnHovering attached property.
+    /// </summary>
+    public static readonly DependencyProperty IconOnHoveringProperty = DependencyProperty.RegisterAttached(
+        "IconOnHovering",
+        typeof(Symbol?),
+        typeof(IconAssist),
+        new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
+
+    /// <summary>
+    /// Identifies the IconOnPressing attached property.
+    /// </summary>
+    public static readonly DependencyProperty IconOnPressingProperty = DependencyProperty.RegisterAttached(
+        "IconOnPressing",
+        typeof(Symbol?),
+        typeof(IconAssist),
+        new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
+
+    /// <summary>
+    /// Identifies the IconOnSelecting attached property.
+    /// </summary>
+    public static readonly DependencyProperty IconOnSelectingProperty = DependencyProperty.RegisterAttached(
+        "IconOnSelecting",
+        typeof(Symbol?),
+        typeof(IconAssist),
+        new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
+
+    /// <summary>
+    /// Identifies the FillOnHovering attached property.
+    /// </summary>
+    public static readonly DependencyProperty FillOnHoveringProperty = DependencyProperty.RegisterAttached(
+        "FillOnHovering",
+        typeof(bool),
+        typeof(IconAssist),
+        new PropertyMetadata(false));
+
+    /// <summary>
+    /// Identifies the FillOnPressing attached property.
+    /// </summary>
+    public static readonly DependencyProperty FillOnPressingProperty = DependencyProperty.RegisterAttached(
+        "FillOnPressing",
+        typeof(bool),
+        typeof(IconAssist),
+        new PropertyMetadata(false));
+
+    /// <summary>
+    /// Identifies the FillOnSelecting attached property.
+    /// </summary>
+    public static readonly DependencyProperty FillOnSelectingProperty = DependencyProperty.RegisterAttached(
+        "FillOnSelecting",
+        typeof(bool),
+        typeof(IconAssist),
+        new PropertyMetadata(false));
+
+    /// <summary>
+    /// Identifies the WeightOnHovering attached property.
+    /// </summary>
+    public static readonly DependencyProperty WeightOnHoveringProperty = DependencyProperty.RegisterAttached(
+        "WeightOnHovering",
         typeof(FontWeight),
         typeof(IconAssist),
         new PropertyMetadata(FontWeights.Normal));
 
     /// <summary>
-    /// Identifies the WeightOnPressed attached property.
+    /// Identifies the WeightOnPressing attached property.
     /// </summary>
-    public static readonly DependencyProperty WeightOnPressedProperty = DependencyProperty.RegisterAttached(
-        "WeightOnPressed",
+    public static readonly DependencyProperty WeightOnPressingProperty = DependencyProperty.RegisterAttached(
+        "WeightOnPressing",
         typeof(FontWeight),
         typeof(IconAssist),
         new PropertyMetadata(FontWeights.Normal));
 
     /// <summary>
-    /// Identifies the WeightOnSelect attached property.
+    /// Identifies the WeightOnSelecting attached property.
     /// </summary>
-    public static readonly DependencyProperty WeightOnSelectProperty = DependencyProperty.RegisterAttached(
-        "WeightOnSelect",
-        typeof(FontWeight),
-        typeof(IconAssist),
-        new PropertyMetadata(FontWeights.Normal));
-    
-    /// <summary>
-    /// Identifies the WeightOnDeselectProperty attached property.
-    /// </summary>
-    public static readonly DependencyProperty WeightOnDeselectProperty = DependencyProperty.RegisterAttached(
-        "WeightOnDeselect",
+    public static readonly DependencyProperty WeightOnSelectingProperty = DependencyProperty.RegisterAttached(
+        "WeightOnSelecting",
         typeof(FontWeight),
         typeof(IconAssist),
         new PropertyMetadata(FontWeights.Normal));
 
-    /// <summary>
-    /// Gets the value of the <see cref="IconProperty"/> attached property for a specified dependency object.
-    /// </summary>
-    /// <param name="element">
-    /// The dependency object for which to retrieve the value of the <see cref="IconProperty"/> property.
-    /// </param>
-    /// <returns>
-    /// The current value of the <see cref="IconProperty"/> attached property on the specified dependency object.
-    /// </returns>
     public static Symbol? GetIcon(DependencyObject element) => (Symbol?)element.GetValue(IconProperty);
 
     /// <summary>
@@ -170,78 +143,6 @@ public static class IconAssist
     /// </param>
     /// <param name="value">The new value to set the property to.</param>
     public static void SetIcon(DependencyObject element, Symbol? value) => element.SetValue(IconProperty, value);
-
-    /// <summary>
-    /// Gets the value of the <see cref="HoverIconProperty"/> attached property for a specified dependency object.
-    /// </summary>
-    /// <param name="element">
-    /// The dependency object for which to retrieve the value of the <see cref="HoverIconProperty"/> property.
-    /// </param>
-    /// <returns>
-    /// The current value of the <see cref="HoverIconProperty"/> attached property on the specified dependency object.
-    /// </returns>
-    public static Symbol? GetHoverIcon(DependencyObject element) => (Symbol?)element.GetValue(HoverIconProperty);
-
-    /// <summary>
-    /// Sets the value of the <see cref="HoverIconProperty"/> attached property for a specified dependency object.
-    /// </summary>
-    /// <param name="element">
-    /// The dependency object for which to set the value of the <see cref="HoverIconProperty"/> property.
-    /// </param>
-    /// <param name="value">The new value to set the property to.</param>
-    public static void SetHoverIcon(DependencyObject element, Symbol? value) =>
-        element.SetValue(HoverIconProperty, value);
-
-    /// <summary>
-    /// Gets the value of the <see cref="SelectIconProperty"/> attached property for a specified dependency object.
-    /// </summary>
-    /// <param name="element">
-    /// The dependency object for which to retrieve the value of the <see cref="SelectIconProperty"/> property.
-    /// </param>
-    /// <returns>
-    /// The current value of the <see cref="SelectIconProperty"/> attached property on the specified dependency object.
-    /// </returns>
-    public static Symbol? GetSelectIcon(DependencyObject element) => (Symbol?)element.GetValue(SelectIconProperty);
-
-    /// <summary>
-    /// Sets the value of the <see cref="SelectIconProperty"/> attached property for a specified dependency object.
-    /// </summary>
-    /// <param name="element">
-    /// The dependency object for which to set the value of the <see cref="SelectIconProperty"/> property.
-    /// </param>
-    /// <param name="value">The new value to set the property to.</param>
-    public static void SetSelectIcon(DependencyObject element, Symbol? value) =>
-        element.SetValue(SelectIconProperty, value);
-
-    /// <summary>
-    /// Gets the value of the <see cref="DeselectIconProperty"/> attached property for a specified dependency object.
-    /// </summary>
-    /// <param name="element">
-    /// The dependency object for which to retrieve the value of the <see cref="DeselectIconProperty"/> property.
-    /// </param>
-    /// <returns>
-    /// The current value of the <see cref="DeselectIconProperty"/> attached property on the specified dependency object.
-    /// </returns>
-    public static Symbol? GetDeselectIcon(DependencyObject element) => (Symbol?)element.GetValue(DeselectIconProperty);
-
-    /// <summary>
-    /// Sets the value of the <see cref="DeselectIconProperty"/> attached property for a specified dependency object.
-    /// </summary>
-    /// <param name="element">
-    /// The dependency object for which to set the value of the <see cref="DeselectIconProperty"/> property.
-    /// </param>
-    /// <param name="value">The new value to set the property to.</param>
-    public static void SetDeselectIcon(DependencyObject element, Symbol? value) =>
-        element.SetValue(DeselectIconProperty, value);
-    
-    /// <summary>
-    /// Sets the value of the <see cref="SizeProperty"/> attached property for a specified dependency object.
-    /// </summary>
-    /// <param name="element">
-    /// The dependency object for which to set the value of the <see cref="SizeProperty"/> property.
-    /// </param>
-    /// <param name="value">The new value to set the property to.</param>
-    public static void SetSize(DependencyObject element, double value) => element.SetValue(SizeProperty, value);
 
     /// <summary>
     /// Gets the value of the <see cref="SizeProperty"/> attached property for a specified dependency object.
@@ -255,33 +156,13 @@ public static class IconAssist
     public static double GetSize(DependencyObject element) => (double)element.GetValue(SizeProperty);
 
     /// <summary>
-    /// Sets the value of the <see cref="StyleProperty"/> attached property for a specified dependency object.
+    /// Sets the value of the <see cref="SizeProperty"/> attached property for a specified dependency object.
     /// </summary>
     /// <param name="element">
-    /// The dependency object for which to set the value of the <see cref="StyleProperty"/> property.
+    /// The dependency object for which to set the value of the <see cref="SizeProperty"/> property.
     /// </param>
     /// <param name="value">The new value to set the property to.</param>
-    public static void SetStyle(DependencyObject element, SymbolStyle value) => element.SetValue(StyleProperty, value);
-
-    /// <summary>
-    /// Gets the value of the <see cref="StyleProperty"/> attached property for a specified dependency object.
-    /// </summary>
-    /// <param name="element">
-    /// The dependency object for which to retrieve the value of the <see cref="StyleProperty"/> property.
-    /// </param>
-    /// <returns>
-    /// The current value of the <see cref="StyleProperty"/> attached property on the specified dependency object.
-    /// </returns>
-    public static SymbolStyle GetStyle(DependencyObject element) => (SymbolStyle)element.GetValue(StyleProperty);
-
-    /// <summary>
-    /// Sets the value of the <see cref="FillProperty"/> attached property for a specified dependency object.
-    /// </summary>
-    /// <param name="element">
-    /// The dependency object for which to set the value of the <see cref="FillProperty"/> property.
-    /// </param>
-    /// <param name="value">The new value to set the property to.</param>
-    public static void SetFill(DependencyObject element, bool value) => element.SetValue(FillProperty, value);
+    public static void SetSize(DependencyObject element, double value) => element.SetValue(SizeProperty, value);
 
     /// <summary>
     /// Gets the value of the <see cref="FillProperty"/> attached property for a specified dependency object.
@@ -295,97 +176,13 @@ public static class IconAssist
     public static bool GetFill(DependencyObject element) => (bool)element.GetValue(FillProperty);
 
     /// <summary>
-    /// Sets the value of the <see cref="FillOnHoverProperty"/> attached property for a specified dependency object.
+    /// Sets the value of the <see cref="FillProperty"/> attached property for a specified dependency object.
     /// </summary>
     /// <param name="element">
-    /// The dependency object for which to set the value of the <see cref="FillOnHoverProperty"/> property.
+    /// The dependency object for which to set the value of the <see cref="FillProperty"/> property.
     /// </param>
     /// <param name="value">The new value to set the property to.</param>
-    public static void SetFillOnHover(DependencyObject element, bool value) =>
-        element.SetValue(FillOnHoverProperty, value);
-
-    /// <summary>
-    /// Gets the value of the <see cref="FillOnHoverProperty"/> attached property for a specified dependency object.
-    /// </summary>
-    /// <param name="element">
-    /// The dependency object for which to retrieve the value of the <see cref="FillOnHoverProperty"/> property.
-    /// </param>
-    /// <returns>
-    /// The current value of the <see cref="FillOnHoverProperty"/> attached property on the specified dependency object.
-    /// </returns>
-    public static bool GetFillOnHover(DependencyObject element) => (bool)element.GetValue(FillOnHoverProperty);
-
-    /// <summary>
-    /// Sets the value of the <see cref="FillOnPressedProperty"/> attached property for a specified dependency object.
-    /// </summary>
-    /// <param name="element">
-    /// The dependency object for which to set the value of the <see cref="FillOnPressedProperty"/> property.
-    /// </param>
-    /// <param name="value">The new value to set the property to.</param>
-    public static void SetFillOnPressed(DependencyObject element, bool value) =>
-        element.SetValue(FillOnPressedProperty, value);
-
-    /// <summary>
-    /// Gets the value of the <see cref="FillOnPressedProperty"/> attached property for a specified dependency object.
-    /// </summary>
-    /// <param name="element">
-    /// The dependency object for which to retrieve the value of the <see cref="FillOnPressedProperty"/> property.
-    /// </param>
-    /// <returns>
-    /// The current value of the <see cref="FillOnPressedProperty"/> attached property on the specified dependency object.
-    /// </returns>
-    public static bool GetFillOnPressed(DependencyObject element) => (bool)element.GetValue(FillOnPressedProperty);
-
-    /// <summary>
-    /// Sets the value of the <see cref="FillOnSelectProperty"/> attached property for a specified dependency object.
-    /// </summary>
-    /// <param name="element">
-    /// The dependency object for which to set the value of the <see cref="FillOnSelectProperty"/> property.
-    /// </param>
-    /// <param name="value">The new value to set the property to.</param>
-    public static void SetFillOnSelect(DependencyObject element, bool value) =>
-        element.SetValue(FillOnSelectProperty, value);
-
-    /// <summary>
-    /// Gets the value of the <see cref="FillOnSelectProperty"/> attached property for a specified dependency object.
-    /// </summary>
-    /// <param name="element">
-    /// The dependency object for which to retrieve the value of the <see cref="FillOnSelectProperty"/> property.
-    /// </param>
-    /// <returns>
-    /// The current value of the <see cref="FillOnSelectProperty"/> attached property on the specified dependency object.
-    /// </returns>
-    public static bool GetFillOnSelect(DependencyObject element) => (bool)element.GetValue(FillOnSelectProperty);
-
-    /// <summary>
-    /// Sets the value of the <see cref="FillOnDeselectProperty"/> attached property for a specified dependency object.
-    /// </summary>
-    /// <param name="element">
-    /// The dependency object for which to set the value of the <see cref="FillOnDeselectProperty"/> property.
-    /// </param>
-    /// <param name="value">The new value to set the property to.</param>
-    public static void SetFillOnDeselect(DependencyObject element, bool value) =>
-        element.SetValue(FillOnDeselectProperty, value);
-
-    /// <summary>
-    /// Gets the value of the <see cref="FillOnDeselectProperty"/> attached property for a specified dependency object.
-    /// </summary>
-    /// <param name="element">
-    /// The dependency object for which to retrieve the value of the <see cref="FillOnDeselectProperty"/> property.
-    /// </param>
-    /// <returns>
-    /// The current value of the <see cref="FillOnDeselectProperty"/> attached property on the specified dependency object.
-    /// </returns>
-    public static bool GetFillOnDeselect(DependencyObject element) => (bool)element.GetValue(FillOnDeselectProperty);
-    
-    /// <summary>
-    /// Sets the value of the <see cref="WeightProperty"/> attached property for a specified dependency object.
-    /// </summary>
-    /// <param name="element">
-    /// The dependency object for which to set the value of the <see cref="WeightProperty"/> property.
-    /// </param>
-    /// <param name="value">The new value to set the property to.</param>
-    public static void SetWeight(DependencyObject element, FontWeight value) => element.SetValue(WeightProperty, value);
+    public static void SetFill(DependencyObject element, bool value) => element.SetValue(FillProperty, value);
 
     /// <summary>
     /// Gets the value of the <see cref="WeightProperty"/> attached property for a specified dependency object.
@@ -399,90 +196,226 @@ public static class IconAssist
     public static FontWeight GetWeight(DependencyObject element) => (FontWeight)element.GetValue(WeightProperty);
 
     /// <summary>
-    /// Sets the value of the <see cref="WeightOnHoverProperty"/> attached property for a specified dependency object.
+    /// Sets the value of the <see cref="WeightProperty"/> attached property for a specified dependency object.
     /// </summary>
     /// <param name="element">
-    /// The dependency object for which to set the value of the <see cref="WeightOnHoverProperty"/> property.
+    /// The dependency object for which to set the value of the <see cref="WeightProperty"/> property.
     /// </param>
     /// <param name="value">The new value to set the property to.</param>
-    public static void SetWeightOnHover(DependencyObject element, FontWeight value) =>
-        element.SetValue(WeightOnHoverProperty, value);
+    public static void SetWeight(DependencyObject element, FontWeight value) => element.SetValue(WeightProperty, value);
 
     /// <summary>
-    /// Gets the value of the <see cref="WeightOnHoverProperty"/> attached property for a specified dependency object.
+    /// Gets the value of the <see cref="StyleProperty"/> attached property for a specified dependency object.
     /// </summary>
     /// <param name="element">
-    /// The dependency object for which to retrieve the value of the <see cref="WeightOnHoverProperty"/> property.
+    /// The dependency object for which to retrieve the value of the <see cref="StyleProperty"/> property.
     /// </param>
     /// <returns>
-    /// The current value of the <see cref="WeightOnHoverProperty"/> attached property on the specified dependency object.
+    /// The current value of the <see cref="StyleProperty"/> attached property on the specified dependency object.
     /// </returns>
-    public static FontWeight GetWeightOnHover(DependencyObject element) =>
-        (FontWeight)element.GetValue(WeightOnHoverProperty);
+    public static SymbolStyle GetStyle(DependencyObject element) => (SymbolStyle)element.GetValue(StyleProperty);
 
     /// <summary>
-    /// Sets the value of the <see cref="WeightOnPressedProperty"/> attached property for a specified dependency object.
+    /// Sets the value of the <see cref="StyleProperty"/> attached property for a specified dependency object.
     /// </summary>
     /// <param name="element">
-    /// The dependency object for which to set the value of the <see cref="WeightOnPressedProperty"/> property.
+    /// The dependency object for which to set the value of the <see cref="StyleProperty"/> property.
     /// </param>
     /// <param name="value">The new value to set the property to.</param>
-    public static void SetWeightOnPressed(DependencyObject element, FontWeight value) =>
-        element.SetValue(WeightOnPressedProperty, value);
+    public static void SetStyle(DependencyObject element, SymbolStyle value) => element.SetValue(StyleProperty, value);
 
     /// <summary>
-    /// Gets the value of the <see cref="WeightOnPressedProperty"/> attached property for a specified dependency object.
+    /// Gets the value of the <see cref="IconOnHoveringProperty"/> attached property for a specified dependency object.
     /// </summary>
     /// <param name="element">
-    /// The dependency object for which to retrieve the value of the <see cref="WeightOnPressedProperty"/> property.
+    /// The dependency object for which to retrieve the value of the <see cref="IconOnHoveringProperty"/> property.
     /// </param>
     /// <returns>
-    /// The current value of the <see cref="WeightOnPressedProperty"/> attached property on the specified dependency object.
+    /// The current value of the <see cref="IconOnHoveringProperty"/> attached property on the specified dependency object.
     /// </returns>
-    public static FontWeight GetWeightOnPressed(DependencyObject element) =>
-        (FontWeight)element.GetValue(WeightOnPressedProperty);
+    public static Symbol? GetIconOnHovering(DependencyObject element) =>
+        (Symbol?)element.GetValue(IconOnHoveringProperty);
 
     /// <summary>
-    /// Sets the value of the <see cref="WeightOnSelectProperty"/> attached property for a specified dependency object.
+    /// Sets the value of the <see cref="IconOnHoveringProperty"/> attached property for a specified dependency object.
     /// </summary>
     /// <param name="element">
-    /// The dependency object for which to set the value of the <see cref="WeightOnSelectProperty"/> property.
+    /// The dependency object for which to set the value of the <see cref="IconOnHoveringProperty"/> property.
     /// </param>
     /// <param name="value">The new value to set the property to.</param>
-    public static void SetWeightOnSelect(DependencyObject element, FontWeight value) =>
-        element.SetValue(WeightOnSelectProperty, value);
+    public static void SetIconOnHovering(DependencyObject element, Symbol? value) =>
+        element.SetValue(IconOnHoveringProperty, value);
 
     /// <summary>
-    /// Gets the value of the <see cref="WeightOnSelectProperty"/> attached property for a specified dependency object.
+    /// Gets the value of the <see cref="IconOnPressingProperty"/> attached property for a specified dependency object.
     /// </summary>
     /// <param name="element">
-    /// The dependency object for which to retrieve the value of the <see cref="WeightOnSelectProperty"/> property.
+    /// The dependency object for which to retrieve the value of the <see cref="IconOnPressingProperty"/> property.
     /// </param>
     /// <returns>
-    /// The current value of the <see cref="WeightOnSelectProperty"/> attached property on the specified dependency object.
+    /// The current value of the <see cref="IconOnPressingProperty"/> attached property on the specified dependency object.
     /// </returns>
-    public static FontWeight GetWeightOnSelect(DependencyObject element) =>
-        (FontWeight)element.GetValue(WeightOnSelectProperty);
-    
+    public static Symbol? GetIconOnPressing(DependencyObject element) =>
+        (Symbol?)element.GetValue(IconOnPressingProperty);
+
     /// <summary>
-    /// Sets the value of the <see cref="WeightOnDeselectProperty"/> attached property for a specified dependency object.
+    /// Sets the value of the <see cref="IconOnPressingProperty"/> attached property for a specified dependency object.
     /// </summary>
     /// <param name="element">
-    /// The dependency object for which to set the value of the <see cref="WeightOnDeselectProperty"/> property.
+    /// The dependency object for which to set the value of the <see cref="IconOnPressingProperty"/> property.
     /// </param>
     /// <param name="value">The new value to set the property to.</param>
-    public static void SetWeightOnDeselect(DependencyObject element, FontWeight value) =>
-        element.SetValue(WeightOnDeselectProperty, value);
+    public static void SetIconOnPressing(DependencyObject element, Symbol? value) =>
+        element.SetValue(IconOnPressingProperty, value);
 
     /// <summary>
-    /// Gets the value of the <see cref="WeightOnDeselectProperty"/> attached property for a specified dependency object.
+    /// Gets the value of the <see cref="IconOnSelectingProperty"/> attached property for a specified dependency object.
     /// </summary>
     /// <param name="element">
-    /// The dependency object for which to retrieve the value of the <see cref="WeightOnDeselectProperty"/> property.
+    /// The dependency object for which to retrieve the value of the <see cref="IconOnSelectingProperty"/> property.
     /// </param>
     /// <returns>
-    /// The current value of the <see cref="WeightOnDeselectProperty"/> attached property on the specified dependency object.
+    /// The current value of the <see cref="IconOnSelectingProperty"/> attached property on the specified dependency object.
     /// </returns>
-    public static FontWeight GetWeightOnDeselect(DependencyObject element) =>
-        (FontWeight)element.GetValue(WeightOnDeselectProperty);
+    public static Symbol? GetIconOnSelecting(DependencyObject element) =>
+        (Symbol?)element.GetValue(IconOnSelectingProperty);
+
+    /// <summary>
+    /// Sets the value of the <see cref="IconOnSelectingProperty"/> attached property for a specified dependency object.
+    /// </summary>
+    /// <param name="element">
+    /// The dependency object for which to set the value of the <see cref="IconOnSelectingProperty"/> property.
+    /// </param>
+    /// <param name="value">The new value to set the property to.</param>
+    public static void SetIconOnSelecting(DependencyObject element, Symbol? value) =>
+        element.SetValue(IconOnSelectingProperty, value);
+
+    /// <summary>
+    /// Gets the value of the <see cref="FillOnHoveringProperty"/> attached property for a specified dependency object.
+    /// </summary>
+    /// <param name="element">
+    /// The dependency object for which to retrieve the value of the <see cref="FillOnHoveringProperty"/> property.
+    /// </param>
+    /// <returns>
+    /// The current value of the <see cref="FillOnHoveringProperty"/> attached property on the specified dependency object.
+    /// </returns>
+    public static bool GetFillOnHovering(DependencyObject element) => (bool)element.GetValue(FillOnHoveringProperty);
+
+    /// <summary>
+    /// Sets the value of the <see cref="FillOnHoveringProperty"/> attached property for a specified dependency object.
+    /// </summary>
+    /// <param name="element">
+    /// The dependency object for which to set the value of the <see cref="FillOnHoveringProperty"/> property.
+    /// </param>
+    /// <param name="value">The new value to set the property to.</param>
+    public static void SetFillOnHovering(DependencyObject element, bool value) =>
+        element.SetValue(FillOnHoveringProperty, value);
+
+    /// <summary>
+    /// Gets the value of the <see cref="FillOnPressingProperty"/> attached property for a specified dependency object.
+    /// </summary>
+    /// <param name="element">
+    /// The dependency object for which to retrieve the value of the <see cref="FillOnPressingProperty"/> property.
+    /// </param>
+    /// <returns>
+    /// The current value of the <see cref="FillOnPressingProperty"/> attached property on the specified dependency object.
+    /// </returns>
+    public static bool GetFillOnPressing(DependencyObject element) => (bool)element.GetValue(FillOnPressingProperty);
+
+    /// <summary>
+    /// Sets the value of the <see cref="FillOnPressingProperty"/> attached property for a specified dependency object.
+    /// </summary>
+    /// <param name="element">
+    /// The dependency object for which to set the value of the <see cref="FillOnPressingProperty"/> property.
+    /// </param>
+    /// <param name="value">The new value to set the property to.</param>
+    public static void SetFillOnPressing(DependencyObject element, bool value) =>
+        element.SetValue(FillOnPressingProperty, value);
+
+    /// <summary>
+    /// Gets the value of the <see cref="FillOnSelectingProperty"/> attached property for a specified dependency object.
+    /// </summary>
+    /// <param name="element">
+    /// The dependency object for which to retrieve the value of the <see cref="FillOnSelectingProperty"/> property.
+    /// </param>
+    /// <returns>
+    /// The current value of the <see cref="FillOnSelectingProperty"/> attached property on the specified dependency object.
+    /// </returns>
+    public static bool GetFillOnSelecting(DependencyObject element) => (bool)element.GetValue(FillOnSelectingProperty);
+
+    /// <summary>
+    /// Sets the value of the <see cref="FillOnSelectingProperty"/> attached property for a specified dependency object.
+    /// </summary>
+    /// <param name="element">
+    /// The dependency object for which to set the value of the <see cref="FillOnSelectingProperty"/> property.
+    /// </param>
+    /// <param name="value">The new value to set the property to.</param>
+    public static void SetFillOnSelecting(DependencyObject element, bool value) =>
+        element.SetValue(FillOnSelectingProperty, value);
+
+    /// <summary>
+    /// Gets the value of the <see cref="WeightOnHoveringProperty"/> attached property for a specified dependency object.
+    /// </summary>
+    /// <param name="element">
+    /// The dependency object for which to retrieve the value of the <see cref="WeightOnHoveringProperty"/> property.
+    /// </param>
+    /// <returns>
+    /// The current value of the <see cref="WeightOnHoveringProperty"/> attached property on the specified dependency object.
+    /// </returns>
+    public static FontWeight GetWeightOnHovering(DependencyObject element) =>
+        (FontWeight)element.GetValue(WeightOnHoveringProperty);
+
+    /// <summary>
+    /// Sets the value of the <see cref="WeightOnHoveringProperty"/> attached property for a specified dependency object.
+    /// </summary>
+    /// <param name="element">
+    /// The dependency object for which to set the value of the <see cref="WeightOnHoveringProperty"/> property.
+    /// </param>
+    /// <param name="value">The new value to set the property to.</param>
+    public static void SetWeightOnHovering(DependencyObject element, FontWeight value) =>
+        element.SetValue(WeightOnHoveringProperty, value);
+
+    /// <summary>
+    /// Gets the value of the <see cref="WeightOnPressingProperty"/> attached property for a specified dependency object.
+    /// </summary>
+    /// <param name="element">
+    /// The dependency object for which to retrieve the value of the <see cref="WeightOnPressingProperty"/> property.
+    /// </param>
+    /// <returns>
+    /// The current value of the <see cref="WeightOnPressingProperty"/> attached property on the specified dependency object.
+    /// </returns>
+    public static FontWeight GetWeightOnPressing(DependencyObject element) =>
+        (FontWeight)element.GetValue(WeightOnPressingProperty);
+
+    /// <summary>
+    /// Sets the value of the <see cref="WeightOnPressingProperty"/> attached property for a specified dependency object.
+    /// </summary>
+    /// <param name="element">
+    /// The dependency object for which to set the value of the <see cref="WeightOnPressingProperty"/> property.
+    /// </param>
+    /// <param name="value">The new value to set the property to.</param>
+    public static void SetWeightOnPressing(DependencyObject element, FontWeight value) =>
+        element.SetValue(WeightOnPressingProperty, value);
+
+    /// <summary>
+    /// Gets the value of the <see cref="WeightOnSelectingProperty"/> attached property for a specified dependency object.
+    /// </summary>
+    /// <param name="element">
+    /// The dependency object for which to retrieve the value of the <see cref="WeightOnSelectingProperty"/> property.
+    /// </param>
+    /// <returns>
+    /// The current value of the <see cref="WeightOnSelectingProperty"/> attached property on the specified dependency object.
+    /// </returns>
+    public static FontWeight GetWeightOnSelecting(DependencyObject element) =>
+        (FontWeight)element.GetValue(WeightOnSelectingProperty);
+
+    /// <summary>
+    /// Sets the value of the <see cref="WeightOnSelectingProperty"/> attached property for a specified dependency object.
+    /// </summary>
+    /// <param name="element">
+    /// The dependency object for which to set the value of the <see cref="WeightOnSelectingProperty"/> property.
+    /// </param>
+    /// <param name="value">The new value to set the property to.</param>
+    public static void SetWeightOnSelecting(DependencyObject element, FontWeight value) =>
+        element.SetValue(WeightOnSelectingProperty, value);
 }
