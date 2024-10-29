@@ -82,16 +82,18 @@
                             StrokeThickness="{TemplateBinding BorderThickness,
                                                               Converter={converters:ThicknessToDoubleConverter}}" />
 
-                        <ContentPresenter
-                            x:Name="Content"
-                            Margin="{TemplateBinding BorderThickness}"
-                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                            Content="{TemplateBinding Content}"
-                            ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                            ContentTemplate="{TemplateBinding ContentTemplate}"
-                            ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
-                            RecognizesAccessKey="False" />
+                        <Border Padding="{TemplateBinding Padding}">
+                            <ContentPresenter
+                                x:Name="Content"
+                                Margin="{TemplateBinding BorderThickness}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Content="{TemplateBinding Content}"
+                                ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                RecognizesAccessKey="False" />
+                        </Border>
                     </controls:OverlapPanel>
 
                     <ControlTemplate.Triggers>
