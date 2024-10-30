@@ -31,16 +31,27 @@ public class SpacedPanel : Panel
             FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
     /// <summary>
-    /// Identifies the <see cref="OverlappingBorderThickness"/> dependency property.
+    /// Identifies the <see cref="JoinItemBorders"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty OverlappingBorderThicknessProperty = DependencyProperty.Register(
-        nameof(OverlappingBorderThickness),
+    public static readonly DependencyProperty JoinItemBordersProperty = DependencyProperty.Register(
+        nameof(JoinItemBorders),
         typeof(bool),
         typeof(SpacedPanel),
         new FrameworkPropertyMetadata(
-            true,
+            false,
             FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
+    /// <summary>
+    /// Identifies the <see cref="ItemBorderThickness"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty ItemBorderThicknessProperty = DependencyProperty.Register(
+        nameof(ItemBorderThickness),
+        typeof(double),
+        typeof(SpacedPanel),
+        new FrameworkPropertyMetadata(
+            1.0,
+            FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure));
+    
     /// <summary>
     /// Initializes static members of the <see cref="SpacedPanel"/> class.
     /// </summary>
@@ -74,14 +85,29 @@ public class SpacedPanel : Panel
     }
 
     /// <summary>
-    /// Gets or sets a value indicating whether the children should overlap the border thickness.
+    /// Gets or sets a value indicating whether the borders of the items should be joined. This is only applicable
+    /// when the <see cref="Spacing"/> between items is 0. This makes the items appear separated by a single border
+    /// instead of two borders (one for each item).
     /// </summary>
     [Bindable(true)]
     [Category(UICategory.Layout)]
-    public bool OverlappingBorderThickness
+    public bool JoinItemBorders
     {
-        get => (bool)GetValue(OverlappingBorderThicknessProperty);
-        set => SetValue(OverlappingBorderThicknessProperty, value);
+        get => (bool)GetValue(JoinItemBordersProperty);
+        set => SetValue(JoinItemBordersProperty, value);
+    }
+    
+    /// <summary>
+    /// Gets or sets the uniform thickness of the border around each item. This value is used when the items are
+    /// eligible for joining borders. This property doesn't set the border thickness of the items, but it is used to
+    /// adjust the position of the items to make them appear as if they have a single border.
+    /// </summary>
+    [Bindable(true)]
+    [Category(UICategory.Layout)]
+    public double ItemBorderThickness
+    {
+        get => (double)GetValue(ItemBorderThicknessProperty);
+        set => SetValue(ItemBorderThicknessProperty, value);
     }
 
     protected override Size MeasureOverride(Size constraints)
@@ -98,36 +124,23 @@ public class SpacedPanel : Panel
         var width = 0.0;
         var height = 0.0;
 
-        var overlappingBorderThickness = IsOverlappingBorderThickness();
-
         for (var i = 0; i < children.Count; i++)
         {
             var child = children[i];
-            
+
             child.Measure(constraints);
 
             var childSize = child.DesiredSize;
-            var thickness = GetChildBorderThickness(child);
 
             if (orientation is Orientation.Horizontal)
             {
                 width += childSize.Width;
                 height = Math.Max(height, childSize.Height);
-
-                if (overlappingBorderThickness)
-                {
-                    width -= thickness.Left;
-                }
             }
             else
             {
                 height += childSize.Height;
                 width = Math.Max(width, childSize.Width);
-
-                if (overlappingBorderThickness)
-                {
-                    height -= thickness.Top;
-                }
             }
         }
 
@@ -148,15 +161,15 @@ public class SpacedPanel : Panel
     protected override Size ArrangeOverride(Size constraints)
     {
         var children = Children;
-        var spacing = Spacing;
+        var spacing = Math.Abs(Spacing);
         var orientation = Orientation;
+        var joinItemBorders = JoinItemBorders && spacing is 0.0;
+        var uniformItemBorderThickness = ItemBorderThickness;
 
         if (children.Count is 0)
         {
             return constraints;
         }
-
-        var overlappingBorderThickness = IsOverlappingBorderThickness();
 
         // Offset of the next child
         var offsetX = 0.0;
@@ -166,29 +179,29 @@ public class SpacedPanel : Panel
         {
             var child = children[i];
             var childSize = child.DesiredSize;
-            var thickness = overlappingBorderThickness
-                ? GetChildBorderThickness(child)
-                : default;
 
             if (orientation is Orientation.Horizontal)
             {
                 child.Arrange(new Rect(offsetX, 0.0, childSize.Width, constraints.Height));
-                offsetX += childSize.Width + spacing - thickness.Left;
+                offsetX += childSize.Width + spacing;
+
+                if (joinItemBorders && i < children.Count - 1)
+                {
+                    offsetX -= uniformItemBorderThickness;
+                }
             }
             else
             {
                 child.Arrange(new Rect(0.0, offsetY, constraints.Width, childSize.Height));
-                offsetY += childSize.Height + spacing - thickness.Top;
+                offsetY += childSize.Height + spacing;
+
+                if (joinItemBorders && i < children.Count - 1)
+                {
+                    offsetY -= uniformItemBorderThickness;
+                }
             }
         }
 
         return constraints;
     }
-
-    private static Thickness GetChildBorderThickness(UIElement element) =>
-        (Thickness?)element.GetValue(Control.BorderThicknessProperty) ?? default;
-
-    private bool IsOverlappingBorderThickness() => OverlappingBorderThickness &&
-                                                   Spacing is 0.0 &&
-                                                   Children.Count is not 1;
 }
