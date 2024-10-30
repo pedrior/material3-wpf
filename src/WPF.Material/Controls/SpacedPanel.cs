@@ -29,7 +29,18 @@ public class SpacedPanel : Panel
         new FrameworkPropertyMetadata(
             Orientation.Horizontal,
             FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure));
-    
+
+    /// <summary>
+    /// Identifies the <see cref="OverlappingBorderThickness"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty OverlappingBorderThicknessProperty = DependencyProperty.Register(
+        nameof(OverlappingBorderThickness),
+        typeof(bool),
+        typeof(SpacedPanel),
+        new FrameworkPropertyMetadata(
+            true,
+            FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure));
+
     /// <summary>
     /// Initializes static members of the <see cref="SpacedPanel"/> class.
     /// </summary>
@@ -61,7 +72,18 @@ public class SpacedPanel : Panel
         get => (Orientation)GetValue(OrientationProperty);
         set => SetValue(OrientationProperty, value);
     }
-    
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the children should overlap the border thickness.
+    /// </summary>
+    [Bindable(true)]
+    [Category(UICategory.Layout)]
+    public bool OverlappingBorderThickness
+    {
+        get => (bool)GetValue(OverlappingBorderThicknessProperty);
+        set => SetValue(OverlappingBorderThicknessProperty, value);
+    }
+
     protected override Size MeasureOverride(Size constraints)
     {
         var children = Children;
@@ -76,6 +98,8 @@ public class SpacedPanel : Panel
         var width = 0.0;
         var height = 0.0;
 
+        var overlappingBorderThickness = IsOverlappingBorderThickness();
+
         for (var i = 0; i < children.Count; i++)
         {
             var child = children[i];
@@ -83,16 +107,27 @@ public class SpacedPanel : Panel
             child.Measure(constraints);
 
             var childSize = child.DesiredSize;
+            var thickness = GetChildBorderThickness(child);
 
             if (orientation is Orientation.Horizontal)
             {
                 width += childSize.Width;
                 height = Math.Max(height, childSize.Height);
+
+                if (overlappingBorderThickness)
+                {
+                    width -= thickness.Left;
+                }
             }
             else
             {
                 height += childSize.Height;
                 width = Math.Max(width, childSize.Width);
+
+                if (overlappingBorderThickness)
+                {
+                    height -= thickness.Top;
+                }
             }
         }
 
@@ -120,7 +155,9 @@ public class SpacedPanel : Panel
         {
             return constraints;
         }
-        
+
+        var overlappingBorderThickness = IsOverlappingBorderThickness();
+
         // Offset of the next child
         var offsetX = 0.0;
         var offsetY = 0.0;
@@ -129,19 +166,29 @@ public class SpacedPanel : Panel
         {
             var child = children[i];
             var childSize = child.DesiredSize;
+            var thickness = overlappingBorderThickness
+                ? GetChildBorderThickness(child)
+                : default;
 
             if (orientation is Orientation.Horizontal)
             {
                 child.Arrange(new Rect(offsetX, 0.0, childSize.Width, constraints.Height));
-                offsetX += childSize.Width + spacing;
+                offsetX += childSize.Width + spacing - thickness.Left;
             }
             else
             {
                 child.Arrange(new Rect(0.0, offsetY, constraints.Width, childSize.Height));
-                offsetY += childSize.Height + spacing;
+                offsetY += childSize.Height + spacing - thickness.Top;
             }
         }
 
         return constraints;
     }
+
+    private static Thickness GetChildBorderThickness(UIElement element) =>
+        (Thickness?)element.GetValue(Control.BorderThicknessProperty) ?? default;
+
+    private bool IsOverlappingBorderThickness() => OverlappingBorderThickness &&
+                                                   Spacing is 0.0 &&
+                                                   Children.Count is not 1;
 }
