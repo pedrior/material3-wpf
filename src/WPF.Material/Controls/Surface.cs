@@ -1,4 +1,5 @@
-﻿using WPF.Material.Shapes;
+﻿using WPF.Material.Assists;
+using WPF.Material.Shapes;
 
 namespace WPF.Material.Controls;
 
@@ -118,7 +119,13 @@ internal class Surface : FrameworkElement
             innerHeight);
         
         var radius = ShapeRadius is not null
-            ? ShapeHelper.ClampCornerRadius(ShapeRadius.Value, innerWidth, innerHeight)
+            ? ShapeHelper.ClampCornerRadius(
+                ShapeRadius.Value,
+                ShapeStyle,
+                innerWidth,
+                innerHeight,
+                useStyleRadius: ShapeAssist.GetUseStyleOnRadiusOverride(this),
+                cornersOverride: ShapeAssist.GetUseCornersOnRadiusOverride(this))
             : ShapeHelper.GetRadiusForStyle(ShapeStyle, ShapeCorner, innerWidth, innerHeight);
 
         var pen = isStroked ? new Pen(null, thickness) : null;

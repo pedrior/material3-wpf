@@ -11,18 +11,39 @@ internal static class ShapeHelper
     private const double LargeRadius = 16.0;
     private const double ExtraLargeRadius = 28.0;
 
-    public static CornerRadius ClampCornerRadius(CornerRadius radius, double width, double height)
+    public static CornerRadius ClampCornerRadius(
+        CornerRadius radius,
+        ShapeStyle style,
+        double width,
+        double height,
+        bool useStyleRadius = true,
+        ShapeCorner cornersOverride = ShapeCorner.All)
     {
         var maxRadius = Math.Min(width, height) * 0.5;
+        var styleRadius = useStyleRadius
+            ? GetRadiusForStyle(style, maxRadius)
+            : 0.0;
 
-        var tl = Math.Clamp(radius.TopLeft, 0.0, maxRadius);
-        var tr = Math.Clamp(radius.TopRight, 0.0, maxRadius);
-        var bl = Math.Clamp(radius.BottomLeft, 0.0, maxRadius);
-        var br = Math.Clamp(radius.BottomRight, 0.0, maxRadius);
+        var tl = ClampRadius(radius.TopLeft, ShapeCorner.TopLeft);
+        var tr = ClampRadius(radius.TopRight, ShapeCorner.TopRight);
+        var bl = ClampRadius(radius.BottomLeft, ShapeCorner.BottomLeft);
+        var br = ClampRadius(radius.BottomRight, ShapeCorner.BottomRight);
 
         return new CornerRadius(tl, tr, bl, br);
+
+        double ClampRadius(double cornerRadius, ShapeCorner shapeCorner)
+        {
+            if (IsCornerSet(cornersOverride, shapeCorner))
+            {
+                return Math.Clamp(cornerRadius, 0.0, maxRadius);
+            }
+            
+            return useStyleRadius 
+                ? styleRadius 
+                : Math.Clamp(cornerRadius, 0.0, maxRadius);
+        }
     }
-    
+
     public static CornerRadius GetRadiusForStyle(ShapeStyle style, ShapeCorner corner, double width, double height)
     {
         var maxRadius = Math.Min(width, height) * 0.5;
