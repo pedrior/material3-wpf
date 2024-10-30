@@ -23,59 +23,58 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:Button}">
-                    <controls:Ripple Foreground="{TemplateBinding Foreground}" OutlineGeometry="{Binding ElementName=Container, Path=RenderedGeometry}">
-                        <controls:Container
-                            x:Name="Container"
-                            assists:InteractionAssist.IsDragged="{TemplateBinding assists:InteractionAssist.IsDragged}"
-                            assists:InteractionAssist.IsEnabled="{TemplateBinding IsEnabled}"
-                            assists:InteractionAssist.IsHovered="{TemplateBinding IsMouseOver}"
-                            assists:InteractionAssist.IsPressed="{TemplateBinding IsPressed}"
-                            assists:ShapeAssist.Corner="{TemplateBinding assists:ShapeAssist.Corner}"
-                            assists:ShapeAssist.Family="{TemplateBinding assists:ShapeAssist.Family}"
-                            assists:ShapeAssist.Radius="{TemplateBinding assists:ShapeAssist.Radius}"
-                            assists:ShapeAssist.Style="{TemplateBinding assists:ShapeAssist.Style}"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Foreground="{TemplateBinding Foreground}">
+                    <controls:Container
+                        x:Name="Container"
+                        assists:InteractionAssist.IsDragged="{TemplateBinding assists:InteractionAssist.IsDragged}"
+                        assists:InteractionAssist.IsEnabled="{TemplateBinding IsEnabled}"
+                        assists:InteractionAssist.IsHovered="{TemplateBinding IsMouseOver}"
+                        assists:InteractionAssist.IsPressed="{TemplateBinding IsPressed}"
+                        assists:ShapeAssist.Corner="{TemplateBinding assists:ShapeAssist.Corner}"
+                        assists:ShapeAssist.Family="{TemplateBinding assists:ShapeAssist.Family}"
+                        assists:ShapeAssist.Radius="{TemplateBinding assists:ShapeAssist.Radius}"
+                        assists:ShapeAssist.Style="{TemplateBinding assists:ShapeAssist.Style}"
+                        controls:Ripple.IsAnimated="True"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Foreground="{TemplateBinding Foreground}">
 
-                            <StackPanel
-                                x:Name="Contents"
-                                Margin="{TemplateBinding Padding}"
-                                HorizontalAlignment="Center"
+                        <StackPanel
+                            x:Name="Contents"
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+
+                            <controls:SymbolIcon
+                                x:Name="Icon"
+                                Margin="0,0,8,0"
                                 VerticalAlignment="Center"
-                                Orientation="Horizontal">
+                                Block.LineHeight="23"
+                                Block.LineStackingStrategy="BlockLineHeight"
+                                FontSize="18"
+                                FontWeight="{TemplateBinding assists:IconAssist.Weight}"
+                                Foreground="{TemplateBinding Foreground}"
+                                IsFilled="{TemplateBinding assists:IconAssist.Fill}"
+                                Symbol="{TemplateBinding assists:IconAssist.Icon}"
+                                SymbolStyle="{TemplateBinding assists:IconAssist.Style}"
+                                TextBlock.Foreground="{TemplateBinding Foreground}"
+                                TextBlock.TextAlignment="Center" />
 
-                                <controls:SymbolIcon
-                                    x:Name="Icon"
-                                    Margin="0,0,8,0"
-                                    VerticalAlignment="Center"
-                                    Block.LineHeight="23"
-                                    Block.LineStackingStrategy="BlockLineHeight"
-                                    FontSize="18"
-                                    FontWeight="{TemplateBinding assists:IconAssist.Weight}"
-                                    Foreground="{TemplateBinding Foreground}"
-                                    IsFilled="{TemplateBinding assists:IconAssist.Fill}"
-                                    Symbol="{TemplateBinding assists:IconAssist.Icon}"
-                                    SymbolStyle="{TemplateBinding assists:IconAssist.Style}"
-                                    TextBlock.Foreground="{TemplateBinding Foreground}"
-                                    TextBlock.TextAlignment="Center" />
-
-                                <ContentPresenter
-                                    x:Name="Label"
-                                    VerticalAlignment="Center"
-                                    Block.LineHeight="20"
-                                    Block.LineStackingStrategy="BlockLineHeight"
-                                    Content="{TemplateBinding Content}"
-                                    ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                    ContentTemplate="{TemplateBinding ContentTemplate}"
-                                    ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
-                                    RecognizesAccessKey="True"
-                                    TextBlock.Foreground="{TemplateBinding Foreground}"
-                                    TextBlock.TextAlignment="Center" />
-                            </StackPanel>
-                        </controls:Container>
-                    </controls:Ripple>
+                            <ContentPresenter
+                                x:Name="Label"
+                                VerticalAlignment="Center"
+                                Block.LineHeight="20"
+                                Block.LineStackingStrategy="BlockLineHeight"
+                                Content="{TemplateBinding Content}"
+                                ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                RecognizesAccessKey="True"
+                                TextBlock.Foreground="{TemplateBinding Foreground}"
+                                TextBlock.TextAlignment="Center" />
+                        </StackPanel>
+                    </controls:Container>
 
                     <ControlTemplate.Triggers>
                         <!--  Tonal  -->

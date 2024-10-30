@@ -18,7 +18,10 @@
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
-                    <controls:SpacedPanel Orientation="Vertical" Spacing="12" />
+                    <controls:SpacedPanel
+                        IsItemsHost="True"
+                        Orientation="Vertical"
+                        Spacing="12" />
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
@@ -105,7 +108,10 @@
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
-                    <controls:SpacedPanel Orientation="Vertical" Spacing="4" />
+                    <controls:SpacedPanel
+                        IsItemsHost="True"
+                        Orientation="Vertical"
+                        Spacing="4" />
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
@@ -140,39 +146,34 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <controls:OverlapPanel Grid.Row="0" Margin="12,0">
-                            <controls:Ripple
-                                x:Name="PART_Ripple"
+
+                        <controls:Container
+                            x:Name="Container"
+                            Grid.Row="0"
+                            Margin="12,0"
+                            assists:InteractionAssist.IsDragged="{TemplateBinding assists:InteractionAssist.IsDragged}"
+                            assists:InteractionAssist.IsEnabled="{TemplateBinding IsEnabled}"
+                            assists:InteractionAssist.IsHovered="{TemplateBinding IsMouseOver}"
+                            assists:InteractionAssist.IsPressed="{TemplateBinding IsPressed}"
+                            assists:ShapeAssist.Family="{TemplateBinding assists:ShapeAssist.Family}"
+                            assists:ShapeAssist.Style="Full"
+                            controls:Ripple.IsAnimated="True"
+                            controls:Ripple.IsCentered="True"
+                            Background="Transparent"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Foreground="{TemplateBinding Foreground}">
+
+                            <controls:SymbolIcon
+                                x:Name="Icon"
+                                VerticalAlignment="Center"
+                                FontSize="{TemplateBinding assists:IconAssist.Size}"
+                                FontWeight="{TemplateBinding assists:IconAssist.Weight}"
                                 Foreground="{TemplateBinding Foreground}"
-                                IsCentered="True"
-                                IsHitTestVisible="False"
-                                OutlineGeometry="{Binding ElementName=Container, Path=RenderedGeometry}">
-
-                                <controls:Container
-                                    x:Name="Container"
-                                    assists:InteractionAssist.IsDragged="{TemplateBinding assists:InteractionAssist.IsDragged}"
-                                    assists:InteractionAssist.IsEnabled="{TemplateBinding IsEnabled}"
-                                    assists:InteractionAssist.IsHovered="{TemplateBinding IsMouseOver}"
-                                    assists:InteractionAssist.IsPressed="{TemplateBinding IsPressed}"
-                                    assists:ShapeAssist.Family="{TemplateBinding assists:ShapeAssist.Family}"
-                                    assists:ShapeAssist.Style="Full"
-                                    Background="Transparent"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                    Foreground="{TemplateBinding Foreground}">
-
-                                    <controls:SymbolIcon
-                                        x:Name="Icon"
-                                        VerticalAlignment="Center"
-                                        FontSize="{TemplateBinding assists:IconAssist.Size}"
-                                        FontWeight="{TemplateBinding assists:IconAssist.Weight}"
-                                        Foreground="{TemplateBinding Foreground}"
-                                        IsFilled="{TemplateBinding assists:IconAssist.Fill}"
-                                        Symbol="{TemplateBinding assists:IconAssist.Icon}"
-                                        SymbolStyle="{TemplateBinding assists:IconAssist.Style}" />
-                                </controls:Container>
-                            </controls:Ripple>
-                        </controls:OverlapPanel>
+                                IsFilled="{TemplateBinding assists:IconAssist.Fill}"
+                                Symbol="{TemplateBinding assists:IconAssist.Icon}"
+                                SymbolStyle="{TemplateBinding assists:IconAssist.Style}" />
+                        </controls:Container>
 
                         <ContentPresenter
                             x:Name="Label"

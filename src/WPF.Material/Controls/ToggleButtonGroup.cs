@@ -1,5 +1,4 @@
 ﻿using System.Collections.Specialized;
-using WPF.Material.Assists;
 using WPF.Material.Environment;
 
 namespace WPF.Material.Controls;
@@ -57,7 +56,7 @@ public class ToggleButtonGroup : ItemsControl
         nameof(InnerRadius),
         typeof(double),
         typeof(ToggleButtonGroup),
-        new PropertyMetadata(0.0, InnerCornerRadiusChanged, CoerceCornerRadius));
+        new PropertyMetadata(0.0, null, CoerceCornerRadius));
 
     /// <summary>
     /// Identifies the <see cref="SelectedIndexFallback"/> dependency property.
@@ -67,8 +66,6 @@ public class ToggleButtonGroup : ItemsControl
         typeof(int),
         typeof(ToggleButtonGroup),
         new PropertyMetadata(0));
-
-    private const double MaxRadius = double.PositiveInfinity;
 
     private readonly HashSet<int> selectedIndices = new();
 
@@ -325,8 +322,6 @@ public class ToggleButtonGroup : ItemsControl
     {
         base.OnItemsChanged(e);
 
-        UpdateItemsRounding();
-
         if (shouldUpdateSelectedIndices)
         {
             UpdateSelectedIndices();
@@ -404,36 +399,6 @@ public class ToggleButtonGroup : ItemsControl
 
     private bool IsLastSelectedButton(int index) => selectedIndices.Count is 1 && selectedIndices.Contains(index);
 
-    private void UpdateItemsRounding()
-    {
-        var count = Items.Count;
-        if (count is 1)
-        {
-            // For a single button, we fully round the corners
-            ShapeAssist.SetRadius((DependencyObject)Items[0]!, new CornerRadius(double.PositiveInfinity));
-        }
-        else
-        {
-            var headRadius = Orientation is Orientation.Horizontal
-                ? new CornerRadius(MaxRadius, InnerRadius, InnerRadius, MaxRadius)
-                : new CornerRadius(MaxRadius, MaxRadius, InnerRadius, InnerRadius);
-
-            var tailRadius = Orientation is Orientation.Horizontal
-                ? new CornerRadius(InnerRadius, MaxRadius, MaxRadius, InnerRadius)
-                : new CornerRadius(InnerRadius, InnerRadius, MaxRadius, MaxRadius);
-
-            // Set the corner radius for the first and last buttons
-            ShapeAssist.SetRadius((DependencyObject)Items[0]!, headRadius);
-            ShapeAssist.SetRadius((DependencyObject)Items[count - 1]!, tailRadius);
-
-            // Set the inner corner radius for the middle buttons
-            for (var i = 1; i < count - 1; i++)
-            {
-                ShapeAssist.SetRadius((DependencyObject)Items[i]!, new CornerRadius(InnerRadius));
-            }
-        }
-    }
-
     private void UpdateSelectedIndices()
     {
         for (var i = 0; i < Items.Count; i++)
@@ -450,14 +415,6 @@ public class ToggleButtonGroup : ItemsControl
     private static bool ValidateSelectionMode(object value) => 
         value is SelectionMode.Single or SelectionMode.Multiple;
 
-    private static void InnerCornerRadiusChanged(DependencyObject element, DependencyPropertyChangedEventArgs e)
-    {
-        var group = (ToggleButtonGroup)element;
-        if (group.Items.Count > 1)
-        {
-            group.UpdateItemsRounding();
-        }
-    }
 
     private static object CoerceSpacing(DependencyObject element, object value) => Math.Max(0.0, (double)value);
 

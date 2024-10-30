@@ -25,41 +25,37 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:IconButton}">
-                    <controls:Ripple
+                    <controls:Container
+                        x:Name="Container"
                         Width="{TemplateBinding assists:LayoutAssist.ContainerWidth}"
                         Height="{TemplateBinding assists:LayoutAssist.ContainerHeight}"
-                        Foreground="{TemplateBinding Foreground}"
-                        OutlineGeometry="{Binding ElementName=Container, Path=RenderedGeometry}">
+                        assists:InteractionAssist.IsDragged="{TemplateBinding assists:InteractionAssist.IsDragged}"
+                        assists:InteractionAssist.IsEnabled="{TemplateBinding IsEnabled}"
+                        assists:InteractionAssist.IsHovered="{TemplateBinding IsMouseOver}"
+                        assists:InteractionAssist.IsPressed="{TemplateBinding IsPressed}"
+                        assists:ShapeAssist.Corner="{TemplateBinding assists:ShapeAssist.Corner}"
+                        assists:ShapeAssist.Family="{TemplateBinding assists:ShapeAssist.Family}"
+                        assists:ShapeAssist.Radius="{TemplateBinding assists:ShapeAssist.Radius}"
+                        assists:ShapeAssist.Style="{TemplateBinding assists:ShapeAssist.Style}"
+                        controls:Ripple.IsAnimated="True"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Foreground="{TemplateBinding Foreground}">
 
-                        <controls:Container
-                            x:Name="Container"
-                            assists:InteractionAssist.IsDragged="{TemplateBinding assists:InteractionAssist.IsDragged}"
-                            assists:InteractionAssist.IsEnabled="{TemplateBinding IsEnabled}"
-                            assists:InteractionAssist.IsHovered="{TemplateBinding IsMouseOver}"
-                            assists:InteractionAssist.IsPressed="{TemplateBinding IsPressed}"
-                            assists:ShapeAssist.Corner="{TemplateBinding assists:ShapeAssist.Corner}"
-                            assists:ShapeAssist.Family="{TemplateBinding assists:ShapeAssist.Family}"
-                            assists:ShapeAssist.Radius="{TemplateBinding assists:ShapeAssist.Radius}"
-                            assists:ShapeAssist.Style="{TemplateBinding assists:ShapeAssist.Style}"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Foreground="{TemplateBinding Foreground}">
-
-                            <controls:SymbolIcon
-                                x:Name="Icon"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                FontSize="{TemplateBinding assists:IconAssist.Size}"
-                                FontWeight="{TemplateBinding assists:IconAssist.Weight}"
-                                Foreground="{TemplateBinding Foreground}"
-                                IsFilled="{TemplateBinding assists:IconAssist.Fill}"
-                                Symbol="{TemplateBinding assists:IconAssist.Icon}"
-                                SymbolStyle="{TemplateBinding assists:IconAssist.Style}"
-                                TextBlock.Foreground="{TemplateBinding Foreground}"
-                                TextBlock.TextAlignment="Center" />
-                        </controls:Container>
-                    </controls:Ripple>
+                        <controls:SymbolIcon
+                            x:Name="Icon"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="{TemplateBinding assists:IconAssist.Size}"
+                            FontWeight="{TemplateBinding assists:IconAssist.Weight}"
+                            Foreground="{TemplateBinding Foreground}"
+                            IsFilled="{TemplateBinding assists:IconAssist.Fill}"
+                            Symbol="{TemplateBinding assists:IconAssist.Icon}"
+                            SymbolStyle="{TemplateBinding assists:IconAssist.Style}"
+                            TextBlock.Foreground="{TemplateBinding Foreground}"
+                            TextBlock.TextAlignment="Center" />
+                    </controls:Container>
 
                     <ControlTemplate.Triggers>
                         <!--  Icon  -->
@@ -151,40 +147,36 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:ToggleIconButton}">
-                    <controls:Ripple
+                    <controls:Container
+                        x:Name="Container"
                         Width="{TemplateBinding assists:LayoutAssist.ContainerWidth}"
                         Height="{TemplateBinding assists:LayoutAssist.ContainerHeight}"
-                        Foreground="{TemplateBinding Foreground}"
-                        OutlineGeometry="{Binding ElementName=Container, Path=RenderedGeometry}">
+                        assists:InteractionAssist.IsDragged="{TemplateBinding assists:InteractionAssist.IsDragged}"
+                        assists:InteractionAssist.IsEnabled="{TemplateBinding IsEnabled}"
+                        assists:InteractionAssist.IsHovered="{TemplateBinding IsMouseOver}"
+                        assists:InteractionAssist.IsPressed="{TemplateBinding IsPressed}"
+                        assists:ShapeAssist.Corner="{TemplateBinding assists:ShapeAssist.Corner}"
+                        assists:ShapeAssist.Family="{TemplateBinding assists:ShapeAssist.Family}"
+                        assists:ShapeAssist.Radius="{TemplateBinding assists:ShapeAssist.Radius}"
+                        assists:ShapeAssist.Style="{TemplateBinding assists:ShapeAssist.Style}"
+                        controls:Ripple.IsAnimated="True"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Foreground="{TemplateBinding Foreground}">
 
-                        <controls:Container
-                            x:Name="Container"
-                            assists:InteractionAssist.IsDragged="{TemplateBinding assists:InteractionAssist.IsDragged}"
-                            assists:InteractionAssist.IsEnabled="{TemplateBinding IsEnabled}"
-                            assists:InteractionAssist.IsHovered="{TemplateBinding IsMouseOver}"
-                            assists:InteractionAssist.IsPressed="{TemplateBinding IsPressed}"
-                            assists:ShapeAssist.Corner="{TemplateBinding assists:ShapeAssist.Corner}"
-                            assists:ShapeAssist.Family="{TemplateBinding assists:ShapeAssist.Family}"
-                            assists:ShapeAssist.Radius="{TemplateBinding assists:ShapeAssist.Radius}"
-                            assists:ShapeAssist.Style="{TemplateBinding assists:ShapeAssist.Style}"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Foreground="{TemplateBinding Foreground}">
-
-                            <controls:SymbolIcon
-                                x:Name="Icon"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                FontSize="{TemplateBinding assists:IconAssist.Size}"
-                                FontWeight="{TemplateBinding assists:IconAssist.Weight}"
-                                Foreground="{TemplateBinding Foreground}"
-                                IsFilled="{TemplateBinding assists:IconAssist.Fill}"
-                                Symbol="{TemplateBinding assists:IconAssist.Icon}"
-                                TextBlock.Foreground="{TemplateBinding Foreground}"
-                                TextBlock.TextAlignment="Center" />
-                        </controls:Container>
-                    </controls:Ripple>
+                        <controls:SymbolIcon
+                            x:Name="Icon"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="{TemplateBinding assists:IconAssist.Size}"
+                            FontWeight="{TemplateBinding assists:IconAssist.Weight}"
+                            Foreground="{TemplateBinding Foreground}"
+                            IsFilled="{TemplateBinding assists:IconAssist.Fill}"
+                            Symbol="{TemplateBinding assists:IconAssist.Icon}"
+                            TextBlock.Foreground="{TemplateBinding Foreground}"
+                            TextBlock.TextAlignment="Center" />
+                    </controls:Container>
 
                     <ControlTemplate.Triggers>
                         <!--  Icon  -->

@@ -55,10 +55,10 @@ public class Ripple : ContentControl
             coerceValueCallback: CoerceFrameRate));
 
     /// <summary>
-    /// Identifies the <see cref="OutlineGeometry"/> dependency property.
+    /// Identifies the <see cref="CanvaClip"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty OutlineGeometryProperty = DependencyProperty.Register(
-        nameof(OutlineGeometry),
+    public static readonly DependencyProperty CanvaClipProperty = DependencyProperty.Register(
+        nameof(CanvaClip),
         typeof(Geometry),
         typeof(Ripple),
         new PropertyMetadata(null));
@@ -110,10 +110,10 @@ public class Ripple : ContentControl
     /// Gets or sets the <see cref="Geometry"/> that defines the shape of the ripple.
     /// </summary>
     [Bindable(false)]
-    public Geometry? OutlineGeometry
+    public Geometry? CanvaClip
     {
-        get => (Geometry?)GetValue(OutlineGeometryProperty);
-        set => SetValue(OutlineGeometryProperty, value);
+        get => (Geometry?)GetValue(CanvaClipProperty);
+        set => SetValue(CanvaClipProperty, value);
     }
 
     /// <summary>

@@ -22,7 +22,7 @@
                             ContentTemplate="{TemplateBinding ContentTemplate}"
                             ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}" />
 
-                        <Canvas Clip="{TemplateBinding OutlineGeometry}" IsHitTestVisible="False">
+                        <Canvas Clip="{TemplateBinding CanvaClip}" IsHitTestVisible="False">
                             <Ellipse x:Name="PART_Ellipse" Fill="{TemplateBinding Foreground}" />
                         </Canvas>
                     </controls:OverlapPanel>
