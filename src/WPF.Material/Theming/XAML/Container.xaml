@@ -70,7 +70,6 @@
                         <controls:Ripple
                             x:Name="Ripple"
                             CanvaClip="{Binding ElementName=Surface, Path=RenderedGeometry}"
-                            ClipToBounds="{TemplateBinding ClipToBounds}"
                             Foreground="{TemplateBinding Foreground}">
 
                             <controls:OverlapPanel Clip="{Binding ElementName=Surface, Path=RenderedGeometry}">
