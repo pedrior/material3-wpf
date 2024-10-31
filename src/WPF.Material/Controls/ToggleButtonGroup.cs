@@ -40,6 +40,15 @@ public class ToggleButtonGroup : ItemsControl
         typeof(ToggleButtonGroup),
         new PropertyMetadata(Orientation.Horizontal));
 
+    /// <summary>
+    /// Identifies the <see cref="IsUniformWidth"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty IsUniformWidthProperty = DependencyProperty.Register(
+        nameof(IsUniformWidth),
+        typeof(bool),
+        typeof(ToggleButtonGroup),
+        new PropertyMetadata(false));
+
     private static readonly DependencyPropertyKey HasSelectedItemsPropertyKey = DependencyProperty.RegisterReadOnly(
         nameof(HasSelectedItems),
         typeof(bool),
@@ -132,6 +141,18 @@ public class ToggleButtonGroup : ItemsControl
     {
         get => (Orientation)GetValue(OrientationProperty);
         set => SetValue(OrientationProperty, value);
+    }
+    
+    /// <summary>
+    /// Gets or sets a value that indicates whether all toggle buttons should have a uniform width, given the widest
+    /// button in the group.
+    /// </summary>
+    [Bindable(true)]
+    [Category(UICategory.Layout)]
+    public bool IsUniformWidth
+    {
+        get => (bool)GetValue(IsUniformWidthProperty);
+        set => SetValue(IsUniformWidthProperty, value);
     }
     
     /// <summary>
@@ -289,6 +310,17 @@ public class ToggleButtonGroup : ItemsControl
             SetIsFirstItem(item, i is 0);
             SetIsLastItem(item, i == Items.Count - 1);
             SetGroupOrientation(item, Orientation);
+            
+            // For some reason, I'm not able to bind the attached properties in the style, so I'm doing it here.
+            if (item.GetBindingExpression(SpacedPanel.StretchHorizontallyProperty) is null)
+            {
+                item.SetBinding(SpacedPanel.StretchHorizontallyProperty, new Binding
+                {
+                    Source = this,
+                    Path = new PropertyPath(IsUniformWidthProperty),
+                    Mode = BindingMode.OneWay
+                });
+            }
         }
     }
 
