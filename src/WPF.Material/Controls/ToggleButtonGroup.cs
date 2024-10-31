@@ -1,4 +1,4 @@
-﻿using System.Collections.Specialized;
+﻿using System.Windows.Controls.Primitives;
 using WPF.Material.Environment;
 
 namespace WPF.Material.Controls;
@@ -9,15 +9,6 @@ namespace WPF.Material.Controls;
 public class ToggleButtonGroup : ItemsControl
 {
     /// <summary>
-    /// Identifies the <see cref="SelectionChanged"/> routed event.
-    /// </summary>
-    public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent(
-        nameof(SelectionChanged),
-        RoutingStrategy.Bubble,
-        typeof(RoutedEventHandler),
-        typeof(ToggleButtonGroup));
-
-    /// <summary>
     /// Identifies the <see cref="RequireSelection"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty RequireSelectionProperty = DependencyProperty.Register(
@@ -27,14 +18,14 @@ public class ToggleButtonGroup : ItemsControl
         new PropertyMetadata(false));
 
     /// <summary>
-    /// Identifies the <see cref="SelectionMode"/> dependency property.
+    /// Identifies the <see cref="IsMultiSelect"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty SelectionModeProperty = DependencyProperty.Register(
-        nameof(SelectionMode),
-        typeof(SelectionMode),
+    public static readonly DependencyProperty IsMultiSelectProperty = DependencyProperty.Register(
+        nameof(IsMultiSelect),
+        typeof(bool),
         typeof(ToggleButtonGroup),
-        new PropertyMetadata(SelectionMode.Single), ValidateSelectionMode);
-    
+        new PropertyMetadata(false));
+
     /// <summary>
     /// Identifies the <see cref="Spacing"/> dependency property.
     /// </summary>
@@ -49,27 +40,36 @@ public class ToggleButtonGroup : ItemsControl
         typeof(ToggleButtonGroup),
         new PropertyMetadata(Orientation.Horizontal));
 
-    /// <summary>
-    /// Identifies the <see cref="InnerRadius"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty InnerRadiusProperty = DependencyProperty.Register(
-        nameof(InnerRadius),
-        typeof(double),
+    private static readonly DependencyPropertyKey HasSelectedItemsPropertyKey = DependencyProperty.RegisterReadOnly(
+        nameof(HasSelectedItems),
+        typeof(bool),
         typeof(ToggleButtonGroup),
-        new PropertyMetadata(0.0, null, CoerceCornerRadius));
+        new PropertyMetadata(false));
+    
+    /// <summary>
+    /// Identifies the <see cref="HasSelectedItems"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty HasSelectedItemsProperty = HasSelectedItemsPropertyKey.DependencyProperty;
+    
+    internal static readonly DependencyProperty IsFirstItemProperty = DependencyProperty.RegisterAttached(
+        "IsFirstItem",
+        typeof(bool),
+        typeof(ToggleButtonGroup),
+        new PropertyMetadata(false));
 
-    /// <summary>
-    /// Identifies the <see cref="SelectedIndexFallback"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty SelectedIndexFallbackProperty = DependencyProperty.Register(
-        nameof(SelectedIndexFallback),
-        typeof(int),
+    internal static readonly DependencyProperty IsLastItemProperty = DependencyProperty.RegisterAttached(
+        "IsLastItem",
+        typeof(bool),
         typeof(ToggleButtonGroup),
-        new PropertyMetadata(0));
+        new PropertyMetadata(false));
+
+    internal static readonly DependencyProperty GroupOrientationProperty = DependencyProperty.RegisterAttached(
+        "GroupOrientation",
+        typeof(Orientation),
+        typeof(ToggleButtonGroup),
+        new PropertyMetadata(Orientation.Horizontal));
 
     private readonly HashSet<int> selectedIndices = new();
-
-    private bool shouldUpdateSelectedIndices = true;
 
     /// <summary>
     /// Initializes static members of the <see cref="ToggleButtonGroup"/> class.
@@ -81,13 +81,10 @@ public class ToggleButtonGroup : ItemsControl
             new FrameworkPropertyMetadata(typeof(ToggleButtonGroup)));
     }
 
-    /// <summary>
-    /// Occurs when the selection of the toggle button group changes.
-    /// </summary>
-    public event RoutedEventHandler SelectionChanged
+    public ToggleButtonGroup()
     {
-        add => AddHandler(SelectionChangedEvent, value);
-        remove => RemoveHandler(SelectionChangedEvent, value);
+        ItemContainerGenerator.StatusChanged += ItemContainerGeneratorStatusChanged;
+        ItemContainerGenerator.ItemsChanged += ItemContainerGeneratorItemsChanged;
     }
 
     /// <summary>
@@ -109,17 +106,17 @@ public class ToggleButtonGroup : ItemsControl
     /// </remarks>
     [Bindable(true)]
     [Category(UICategory.Common)]
-    public SelectionMode SelectionMode
+    public bool IsMultiSelect
     {
-        get => (SelectionMode)GetValue(SelectionModeProperty);
-        set => SetValue(SelectionModeProperty, value);
+        get => (bool)GetValue(IsMultiSelectProperty);
+        set => SetValue(IsMultiSelectProperty, value);
     }
 
     /// <summary>
     /// Gets or sets the amount of space between the toggle buttons.
     /// </summary>
     [Bindable(true)]
-    [Category(UICategory.Appearance)]
+    [Category(UICategory.Layout)]
     public double Spacing
     {
         get => (double)GetValue(SpacingProperty);
@@ -130,293 +127,186 @@ public class ToggleButtonGroup : ItemsControl
     /// Gets or sets the orientation of the toggle button group. 
     /// </summary>
     [Bindable(true)]
-    [Category(UICategory.Appearance)]
+    [Category(UICategory.Layout)]
     public Orientation Orientation
     {
         get => (Orientation)GetValue(OrientationProperty);
         set => SetValue(OrientationProperty, value);
     }
-
+    
     /// <summary>
-    /// Gets or sets the inner radius of the toggle buttons.
-    /// </summary>
-    [Bindable(true)]
-    [Category(UICategory.Appearance)]
-    public double InnerRadius
-    {
-        get => (double)GetValue(InnerRadiusProperty);
-        set => SetValue(InnerRadiusProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the fallback toggle button index when no button is selected.
+    /// Gets a value that indicates whether the group has selected items.
     /// </summary>
     [Bindable(true)]
     [Category(UICategory.Common)]
-    public int SelectedIndexFallback
+    public bool HasSelectedItems
     {
-        get => (int)GetValue(SelectedIndexFallbackProperty);
-        set => SetValue(SelectedIndexFallbackProperty, value);
+        get => (bool)GetValue(HasSelectedItemsProperty);
+        private set => SetValue(HasSelectedItemsPropertyKey, value);
     }
-
+    
     /// <summary>
-    /// Gets the currently selected toggle button indices.
+    /// Gets the indices of the selected items in the group.
     /// </summary>
     public IReadOnlySet<int> SelectedIndices => selectedIndices;
 
-    /// <summary>
-    /// Selects the toggle button at the specified index.
-    /// </summary>
-    /// <remarks>
-    /// If the <see cref="SelectionMode"/> is <see cref="float"/>, the currently
-    /// selected button, if exists, will be deselected before selecting the new button.
-    /// </remarks>
-    /// <param name="index">The index of the toggle button to select.</param>
-    /// <returns>
-    /// <see langword="true"/> if the button was selected; otherwise, <see langword="false"/>.
-    /// <para>
-    /// It returns <see langword="false"/> if the button is already selected.
-    /// </para>
-    /// </returns>
-    /// <exception cref="ArgumentOutOfRangeException">
-    /// <paramref name="index"/> is less than 0 or greater than or equal to the number of items in the group.
-    /// </exception>
-    public bool Select(int index)
+    private void ItemContainerGeneratorStatusChanged(object? sender, EventArgs e)
     {
-        if (index < 0 || index >= Items.Count)
+        if (ItemContainerGenerator.Status is not GeneratorStatus.ContainersGenerated)
         {
-            throw new ArgumentOutOfRangeException(nameof(index));
+            return;
         }
-
-        if (selectedIndices.Contains(index))
-        {
-            return false;
-        }
-
-        // For single selection mode, deselect the currently selected button first
-        if (SelectionMode is SelectionMode.Single && selectedIndices.Count is 1)
-        {
-            DeselectButton(selectedIndices.First());
-        }
-
-        SelectButton(index);
-        return true;
+        
+        InvalidateItemsSelection();
+        InvalidateItemsGroupInformation();
     }
 
-    /// <summary>
-    /// Deselects the toggle button at the specified index.
-    /// </summary>
-    /// <param name="index">The index of the toggle button to deselect.</param>
-    /// <returns>
-    /// <see langword="true"/> if the button was deselected; otherwise, <see langword="false"/>.
-    /// <para>
-    /// It returns <see langword="false"/> if the button is not selected or <see cref="RequireSelection"/> is
-    /// <see langword="true"/> and the button is the last selected button in the group.
-    /// </para>
-    /// </returns>
-    /// <exception cref="ArgumentOutOfRangeException">
-    /// <paramref name="index"/> is less than 0 or greater than or equal to the number of items in the group.
-    /// </exception>
-    public bool Deselect(int index)
+    private void ItemContainerGeneratorItemsChanged(object sender, ItemsChangedEventArgs e)
     {
-        if (index < 0 || index >= Items.Count)
+        if (ItemContainerGenerator.Status is not GeneratorStatus.ContainersGenerated)
         {
-            throw new ArgumentOutOfRangeException(nameof(index));
+            return;
         }
-
-        if (!selectedIndices.Contains(index))
-        {
-            return false;
-        }
-
-        // Do not deselect the last selected button when selection is required
-        if (RequireSelection && IsLastSelectedButton(index))
-        {
-            return false;
-        }
-
-        DeselectButton(index);
-        return true;
+        
+        InvalidateItemsSelection();
+        InvalidateItemsGroupInformation();
     }
 
-    /// <summary>
-    /// Selects all toggle buttons in the group.
-    /// </summary>
-    /// <returns>
-    /// <see langword="true"/> if any button was selected; otherwise, <see langword="false"/>.
-    /// <para>
-    /// It returns <see langword="false"/> if the <see cref="SelectionMode"/> is <see cref="System.Windows.Controls.SelectionMode.Single"/>
-    /// or all buttons are already selected.
-    /// </para>
-    /// </returns>
-    public bool SelectAll()
+    internal void ToggleItem(ToggleButton item)
     {
-        // Skip if selection mode is single or all buttons are already selected
-        if (SelectionMode is SelectionMode.Single || selectedIndices.Count == Items.Count)
-        {
-            return false;
-        }
-
-        // Select all deselected buttons
-        for (var i = 0; i < Items.Count; i++)
-        {
-            if (!IsButtonSelected(i))
-            {
-                SelectButton(i);
-            }
-        }
-
-        return true;
-    }
-
-    /// <summary>
-    /// Deselects all toggle buttons in the group.
-    /// </summary>
-    /// <remarks>
-    /// If <see cref="RequireSelection"/> is <see langword="true"/>, the fallback toggle button will remain selected.
-    /// </remarks>
-    /// <returns>
-    /// <see langword="true"/> if any button was deselected; otherwise, <see langword="false"/>.
-    /// <para>
-    /// It returns <see langword="false"/> if no buttons are selected.
-    /// </para>
-    /// </returns>
-    public bool DeselectAll()
-    {
-        // Skip if no buttons are selected
-        if (selectedIndices.Count is 0)
-        {
-            return false;
-        }
-
-        // If selection is required, keep the fallback toggle button selected
-        var fallbackIndex = RequireSelection
-            ? Math.Clamp(SelectedIndexFallback, -1, Items.Count - 1)
-            : -1;
-
-        // Select the fallback button if it is not selected
-        if (!selectedIndices.Contains(fallbackIndex) && fallbackIndex >= 0)
-        {
-            Select(fallbackIndex);
-        }
-
-        // Deselect all selected buttons
-        for (var i = 0; i < Items.Count; i++)
-        {
-            if (i != fallbackIndex && IsButtonSelected(i))
-            {
-                DeselectButton(i);
-            }
-        }
-
-        return true;
-    }
-
-    /// <summary>
-    /// Occurs when the selection of the toggle button group changes.
-    /// </summary>
-    /// <param name="e">The event data.</param>
-    protected virtual void OnSelectionChanged(RoutedEventArgs e) => RaiseEvent(e);
-
-    protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e)
-    {
-        base.OnItemsChanged(e);
-
-        if (shouldUpdateSelectedIndices)
-        {
-            UpdateSelectedIndices();
-        }
-    }
-
-    internal void Toggle(ToggleButton button)
-    {
-        var index = Items.IndexOf(button);
+        var index = ItemContainerGenerator.IndexFromContainer(item);
         if (index is -1)
-        {
-            throw new ArgumentException("The button specified is not part of the group.");
-        }
-
-        var isSelected = IsButtonSelected(index);
-        if (SelectionMode is SelectionMode.Single)
-        {
-            if (isSelected && !RequireSelection)
-            {
-                DeselectButton(index);
-            }
-            else
-            {
-                DeselectButtonsExcept(index);
-                SelectButton(index);
-            }
-        }
-        else
-        {
-            if (isSelected && !(RequireSelection && IsLastSelectedButton(index)))
-            {
-                DeselectButton(index);
-            }
-            else
-            {
-                SelectButton(index);
-            }
-        }
-    }
-
-    private bool IsButtonSelected(int index) => selectedIndices.Contains(index);
-
-    private void SelectButton(int index) => SetButtonSelectState(index, true);
-
-    private void DeselectButton(int index) => SetButtonSelectState(index, false);
-
-    private void SetButtonSelectState(int index, bool selected)
-    {
-        if (Items[index] is not ToggleButton item)
         {
             return;
         }
 
-        item.IsChecked = selected;
-
-        if (selected)
+        if (IsMultiSelect)
         {
-            selectedIndices.Add(index);
+            HandleToggleItemInMultiSelectMode(item, index);
         }
         else
         {
-            selectedIndices.Remove(index);
+            HandleToggleItemInSingleSelectMode(item, index);
         }
-
-        OnSelectionChanged(new RoutedEventArgs(SelectionChangedEvent));
     }
 
-    private void DeselectButtonsExcept(int index)
+    private void HandleToggleItemInMultiSelectMode(ToggleButton item, int itemIndex)
     {
-        foreach (var i in selectedIndices.Where(i => i != index))
+        if (IsItemSelected(itemIndex))
         {
-            DeselectButton(i);
+            if (!RequireSelection || selectedIndices.Count is not 1)
+            {
+                SetItemSelected(item, itemIndex, false);
+            }
+        }
+        else
+        {
+            SetItemSelected(item, itemIndex, true);
+        }
+    }
+    
+    private void HandleToggleItemInSingleSelectMode(ToggleButton item, int itemIndex)
+    {
+        if (IsItemSelected(itemIndex))
+        {
+            if (!RequireSelection)
+            {
+                SetItemSelected(item, itemIndex, false);
+            }
+        }
+        else
+        {
+            if (selectedIndices.Count is 1)
+            {
+                SetItemSelected(selectedIndices.First(), false);
+            }
+
+            SetItemSelected(item, itemIndex, true);
         }
     }
 
-    private bool IsLastSelectedButton(int index) => selectedIndices.Count is 1 && selectedIndices.Contains(index);
+    private bool IsItemSelected(int itemIndex) => selectedIndices.Contains(itemIndex);
 
-    private void UpdateSelectedIndices()
+    private void SetItemSelected(int itemIndex, bool isSelected)
+    {
+        if (ItemContainerGenerator.ContainerFromIndex(itemIndex) is ToggleButton item)
+        {
+            SetItemSelected(item, itemIndex, isSelected);
+        }
+    }
+
+    private void SetItemSelected(ToggleButton item, int itemIndex, bool isSelected)
+    {
+        item.IsChecked = isSelected;
+        if (isSelected)
+        {
+            selectedIndices.Add(itemIndex);
+        }
+        else
+        {
+            selectedIndices.Remove(itemIndex);
+        }
+        
+        HasSelectedItems = selectedIndices.Count > 0;
+    }
+    
+    private void InvalidateItemsSelection()
     {
         for (var i = 0; i < Items.Count; i++)
         {
-            if (Items[i] is ToggleButton { IsChecked: true })
+            if (ItemContainerGenerator.ContainerFromIndex(i) is not ToggleButton { IsChecked: true } item)
+            {
+                continue;
+            }
+
+            if (IsMultiSelect)
             {
                 selectedIndices.Add(i);
             }
+            else
+            {
+                if (selectedIndices.Count is 1)
+                {
+                    SetItemSelected(selectedIndices.First(), false);
+                }
+
+                SetItemSelected(item, i, true);
+            }
+            
+            HasSelectedItems = true;
         }
-
-        shouldUpdateSelectedIndices = false;
     }
-    
-    private static bool ValidateSelectionMode(object value) => 
-        value is SelectionMode.Single or SelectionMode.Multiple;
 
+    private void InvalidateItemsGroupInformation()
+    {
+        for (var i = 0; i < Items.Count; i++)
+        {
+            if (ItemContainerGenerator.ContainerFromIndex(i) is not ToggleButton item)
+            {
+                continue;
+            }
+
+            SetIsFirstItem(item, i is 0);
+            SetIsLastItem(item, i == Items.Count - 1);
+            SetGroupOrientation(item, Orientation);
+        }
+    }
+
+    internal static void SetIsFirstItem(DependencyObject element, bool value) =>
+        element.SetValue(IsFirstItemProperty, value);
+
+    internal static bool GetIsFirstItem(DependencyObject element) => (bool)element.GetValue(IsFirstItemProperty);
+
+    internal static void SetIsLastItem(DependencyObject element, bool value) =>
+        element.SetValue(IsLastItemProperty, value);
+
+    internal static bool GetIsLastItem(DependencyObject element) => (bool)element.GetValue(IsLastItemProperty);
+
+    internal static void SetGroupOrientation(DependencyObject element, Orientation value) =>
+        element.SetValue(GroupOrientationProperty, value);
+
+    internal static Orientation GetGroupOrientation(DependencyObject element) =>
+        (Orientation)element.GetValue(GroupOrientationProperty);
 
     private static object CoerceSpacing(DependencyObject element, object value) => Math.Max(0.0, (double)value);
-
-    private static object CoerceCornerRadius(DependencyObject element, object value) => Math.Max(0.0, (double)value);
 }

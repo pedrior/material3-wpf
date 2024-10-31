@@ -22,7 +22,7 @@ public class ToggleButton : System.Windows.Controls.Primitives.ToggleButton
     {
         if (Parent is ToggleButtonGroup group)
         {
-            group.Toggle(this);
+            group.ToggleItem(this);
         }
         else
         {

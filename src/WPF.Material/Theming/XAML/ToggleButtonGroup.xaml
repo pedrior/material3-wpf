@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:assists="clr-namespace:WPF.Material.Assists"
     xmlns:controls="clr-namespace:WPF.Material.Controls"
+    xmlns:converters="clr-namespace:WPF.Material.Converters"
     xmlns:typography="clr-namespace:WPF.Material.Typography">
 
     <Style TargetType="{x:Type controls:ToggleButton}">
@@ -73,10 +74,12 @@
     </Style>
 
     <Style TargetType="{x:Type controls:ToggleButtonGroup}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource Material.Colors.OnSurface}" />
         <Setter Property="BorderBrush" Value="{DynamicResource Material.Colors.Outline}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Orientation" Value="Horizontal" />
-        <Setter Property="SelectionMode" Value="Single" />
+        <Setter Property="IsMultiSelect" Value="False" />
         <Setter Property="RequireSelection" Value="False" />
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />
@@ -89,36 +92,72 @@
                 <ItemsPanelTemplate>
                     <controls:SpacedPanel
                         IsItemsHost="True"
+                        ItemBorderThickness="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ToggleButtonGroup}, AncestorLevel=1}, Path=BorderThickness, Converter={converters:ThicknessToDoubleConverter}}"
+                        JoinItemBorders="True"
                         Orientation="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ToggleButtonGroup}, AncestorLevel=1}, Path=Orientation}"
                         Spacing="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ToggleButtonGroup}, AncestorLevel=1}, Path=Spacing}" />
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style BasedOn="{StaticResource {x:Type controls:ToggleButton}}" TargetType="{x:Type controls:ToggleButton}">
+                    <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ToggleButtonGroup}, AncestorLevel=1}, Path=Background}" />
+                    <Setter Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ToggleButtonGroup}, AncestorLevel=1}, Path=BorderBrush}" />
+                    <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ToggleButtonGroup}, AncestorLevel=1}, Path=Foreground}" />
+                    <Setter Property="BorderThickness" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ToggleButtonGroup}, AncestorLevel=1}, Path=BorderThickness}" />
+                    <Setter Property="assists:ShapeAssist.Radius" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ToggleButtonGroup}, AncestorLevel=1}, Path=(assists:ShapeAssist.Radius)}" />
+                    <Setter Property="controls:ToggleButtonGroup.GroupOrientation" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ToggleButtonGroup}, AncestorLevel=1}, Path=Orientation}" />
+                    <Style.Triggers>
+                        <Trigger Property="controls:ToggleButtonGroup.IsFirstItem" Value="True">
+                            <Setter Property="assists:ShapeAssist.Style" Value="Full" />
+                        </Trigger>
+                        <Trigger Property="controls:ToggleButtonGroup.IsLastItem" Value="True">
+                            <Setter Property="assists:ShapeAssist.Style" Value="Full" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="controls:ToggleButtonGroup.IsFirstItem" Value="True" />
+                                <Condition Property="controls:ToggleButtonGroup.GroupOrientation" Value="Horizontal" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="assists:ShapeAssist.Corner" Value="TopLeft, BottomLeft" />
+                            <Setter Property="assists:ShapeAssist.UseCornersOnRadiusOverride" Value="TopRight, BottomRight" />
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="controls:ToggleButtonGroup.IsLastItem" Value="True" />
+                                <Condition Property="controls:ToggleButtonGroup.GroupOrientation" Value="Horizontal" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="assists:ShapeAssist.Corner" Value="TopRight, BottomRight" />
+                            <Setter Property="assists:ShapeAssist.UseCornersOnRadiusOverride" Value="TopLeft, BottomLeft" />
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="controls:ToggleButtonGroup.IsFirstItem" Value="True" />
+                                <Condition Property="controls:ToggleButtonGroup.GroupOrientation" Value="Vertical" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="assists:ShapeAssist.Corner" Value="TopLeft, TopRight" />
+                            <Setter Property="assists:ShapeAssist.UseCornersOnRadiusOverride" Value="BottomLeft, BottomRight" />
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="controls:ToggleButtonGroup.IsLastItem" Value="True" />
+                                <Condition Property="controls:ToggleButtonGroup.GroupOrientation" Value="Vertical" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="assists:ShapeAssist.Corner" Value="BottomLeft, BottomRight" />
+                            <Setter Property="assists:ShapeAssist.UseCornersOnRadiusOverride" Value="TopLeft, TopRight" />
+                        </MultiTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:ToggleButtonGroup}">
-                    <controls:Container
-                        assists:ShapeAssist.Corner="{TemplateBinding assists:ShapeAssist.Corner}"
-                        assists:ShapeAssist.Family="{TemplateBinding assists:ShapeAssist.Family}"
-                        assists:ShapeAssist.Radius="{TemplateBinding assists:ShapeAssist.Radius}"
-                        assists:ShapeAssist.Style="{TemplateBinding assists:ShapeAssist.Style}"
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}">
-
-                        <ItemsPresenter
-                            Margin="{TemplateBinding Padding}"
-                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
-
-                            <ItemsPresenter.Resources>
-                                <Style BasedOn="{StaticResource {x:Type controls:ToggleButton}}" TargetType="{x:Type controls:ToggleButton}">
-                                    <Setter Property="BorderThickness" Value="0" />
-                                    <Setter Property="BorderBrush" Value="{x:Null}" />
-                                </Style>
-                            </ItemsPresenter.Resources>
-                        </ItemsPresenter>
-                    </controls:Container>
+                    <ItemsPresenter
+                        Margin="{TemplateBinding Padding}"
+                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
