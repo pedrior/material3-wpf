@@ -195,6 +195,10 @@ public class SpacedPanel : Panel
 
         var totalWidth = 0.0;
         var totalHeight = 0.0;
+        
+        // Keep track of the maximum width and height of the children.
+        var maxChildWidth = 0.0;
+        var maxChildHeight = 0.0;
 
         stretchableChildrenCount = 0;
         totalNonStretchedWidth = 0.0;
@@ -208,28 +212,33 @@ public class SpacedPanel : Panel
             child.Measure(availableSize);
             var childSize = child.DesiredSize;
 
-            // Calculate the total width and height of the panel based on the orientation and the size of the child.
+            // Calculate the total size of the panel and prepare children for stretching if needed.
             if (orientation is Orientation.Horizontal)
             {
                 totalWidth += childSize.Width;
                 totalHeight = Math.Max(totalHeight, childSize.Height);
+                
+                maxChildWidth = Math.Max(maxChildWidth, childSize.Width);
+                
+                if (GetStretchHorizontally(child))
+                {
+                    stretchableChildrenCount++;
+                }
+                else
+                {
+                    totalNonStretchedWidth += childSize.Width;
+                }
             }
             else
             {
                 totalHeight += childSize.Height;
                 totalWidth = Math.Max(totalWidth, childSize.Width);
-            }
-
-            // Count the number of stretchable children and the total width and height of the non-stretched children.
-            if (GetStretchHorizontally(child) || GetStretchVertically(child))
-            {
-                stretchableChildrenCount++;
-            }
-            else
-            {
-                if (orientation is Orientation.Horizontal)
+                
+                maxChildHeight = Math.Max(maxChildHeight, childSize.Height);
+                
+                if (GetStretchVertically(child))
                 {
-                    totalNonStretchedWidth += childSize.Width;
+                    stretchableChildrenCount++;
                 }
                 else
                 {
@@ -237,12 +246,11 @@ public class SpacedPanel : Panel
                 }
             }
         }
-
-        // Adjust the total size of the panel by adding the total spacing between children and removing the total
-        // border thickness that has been joined. Also, ensures that the total size is at least the size of the
-        // available space if there are any stretchable children.
-
+        
+        // The total spacing between children
         var totalSpacing = spacing * (children.Count - 1);
+        
+        // The total thickness of the borders between children
         var totalJoinedBorderThickness = joinItemBorders
             ? itemBorderThickness * (children.Count - 1)
             : 0.0;
@@ -250,20 +258,28 @@ public class SpacedPanel : Panel
         if (orientation is Orientation.Horizontal)
         {
             totalWidth += totalSpacing - totalJoinedBorderThickness;
+            
+            // Ensure the panel has enough width to arrange the children.
             if (stretchableChildrenCount > 0)
             {
-                totalWidth = Math.Max(totalWidth, availableSize.Width);
-                totalNonStretchedWidth -= totalJoinedBorderThickness;
+                totalWidth = Math.Max(totalWidth, maxChildWidth * children.Count);
             }
+            
+            // Adjust the total non-stretched width to account for the borders between children.
+            totalNonStretchedWidth -= totalJoinedBorderThickness;
         }
         else
         {
             totalHeight += totalSpacing - totalJoinedBorderThickness;
+            
+            // Ensure the panel has enough height to arrange the children.
             if (stretchableChildrenCount > 0)
             {
-                totalHeight = Math.Max(totalHeight, availableSize.Height);
-                totalNonStretchedHeight -= totalJoinedBorderThickness;
+                totalHeight = Math.Max(totalHeight, maxChildHeight * children.Count);
             }
+            
+            // Adjust the total non-stretched height to account for the borders between children.
+            totalNonStretchedHeight -= totalJoinedBorderThickness;
         }
 
         return new Size(totalWidth, totalHeight);
