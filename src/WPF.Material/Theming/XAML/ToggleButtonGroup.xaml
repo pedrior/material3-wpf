@@ -86,7 +86,7 @@
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
         <Setter Property="Focusable" Value="False" />
-        <Setter Property="assists:ShapeAssist.Style" Value="ExtraLarge" />
+        <Setter Property="assists:ShapeAssist.Style" Value="Full" />
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
@@ -110,14 +110,22 @@
                     <Setter Property="controls:ToggleButtonGroup.GroupOrientation" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ToggleButtonGroup}, AncestorLevel=1}, Path=Orientation}" />
                     <Style.Triggers>
                         <Trigger Property="controls:ToggleButtonGroup.IsFirstItem" Value="True">
-                            <Setter Property="assists:ShapeAssist.Style" Value="Full" />
+                            <Setter Property="assists:ShapeAssist.Style" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ToggleButtonGroup}, AncestorLevel=1}, Path=(assists:ShapeAssist.Style)}" />
                         </Trigger>
                         <Trigger Property="controls:ToggleButtonGroup.IsLastItem" Value="True">
-                            <Setter Property="assists:ShapeAssist.Style" Value="Full" />
+                            <Setter Property="assists:ShapeAssist.Style" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ToggleButtonGroup}, AncestorLevel=1}, Path=(assists:ShapeAssist.Style)}" />
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="controls:ToggleButtonGroup.IsFirstItem" Value="True" />
+                                <Condition Property="controls:ToggleButtonGroup.IsLastItem" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="assists:ShapeAssist.UseCornersOnRadiusOverride" Value="None" />
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="controls:ToggleButtonGroup.IsFirstItem" Value="True" />
+                                <Condition Property="controls:ToggleButtonGroup.IsLastItem" Value="False" />
                                 <Condition Property="controls:ToggleButtonGroup.GroupOrientation" Value="Horizontal" />
                             </MultiTrigger.Conditions>
                             <Setter Property="assists:ShapeAssist.Corner" Value="TopLeft, BottomLeft" />
@@ -125,6 +133,7 @@
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
+                                <Condition Property="controls:ToggleButtonGroup.IsFirstItem" Value="False" />
                                 <Condition Property="controls:ToggleButtonGroup.IsLastItem" Value="True" />
                                 <Condition Property="controls:ToggleButtonGroup.GroupOrientation" Value="Horizontal" />
                             </MultiTrigger.Conditions>
@@ -134,6 +143,7 @@
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="controls:ToggleButtonGroup.IsFirstItem" Value="True" />
+                                <Condition Property="controls:ToggleButtonGroup.IsLastItem" Value="False" />
                                 <Condition Property="controls:ToggleButtonGroup.GroupOrientation" Value="Vertical" />
                             </MultiTrigger.Conditions>
                             <Setter Property="assists:ShapeAssist.Corner" Value="TopLeft, TopRight" />
@@ -141,6 +151,7 @@
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
+                                <Condition Property="controls:ToggleButtonGroup.IsFirstItem" Value="False" />
                                 <Condition Property="controls:ToggleButtonGroup.IsLastItem" Value="True" />
                                 <Condition Property="controls:ToggleButtonGroup.GroupOrientation" Value="Vertical" />
                             </MultiTrigger.Conditions>
