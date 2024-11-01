@@ -15,7 +15,7 @@ public class ToggleButton : System.Windows.Controls.Primitives.ToggleButton
         // We don't support the three state behavior
         IsThreeStateProperty.OverrideMetadata(
             typeof(ToggleIconButton),
-            new FrameworkPropertyMetadata(false, null, CoerceIsChecked));
+            new FrameworkPropertyMetadata(false, null, CoerceIsThreeState));
     }
 
     protected override void OnToggle()
@@ -30,5 +30,5 @@ public class ToggleButton : System.Windows.Controls.Primitives.ToggleButton
         }
     }
     
-    private static object CoerceIsChecked(DependencyObject element, object value) => false;
+    private static object CoerceIsThreeState(DependencyObject element, object value) => false;
 }
