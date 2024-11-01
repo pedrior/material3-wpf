@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using WPF.Material.Assists;
 
 namespace WPF.Material.Controls;
 
@@ -11,36 +12,6 @@ namespace WPF.Material.Controls;
 [EditorBrowsable(EditorBrowsableState.Never)]
 public class Ripple : ContentControl
 {
-    /// <summary>
-    /// Identifies the Enabled attached property.
-    /// </summary>
-    public static readonly DependencyProperty IsAnimatedProperty = DependencyProperty.RegisterAttached(
-        "IsAnimated",
-        typeof(bool),
-        typeof(Ripple),
-        new FrameworkPropertyMetadata(
-            true,
-            FrameworkPropertyMetadataOptions.Inherits,
-            IsEnabledAttachedPropertyChanged));
-
-    /// <summary>
-    /// Identifies the IsCentered attached property.
-    /// </summary>
-    public static readonly DependencyProperty IsCenteredProperty = DependencyProperty.RegisterAttached(
-        "IsCentered",
-        typeof(bool),
-        typeof(Ripple),
-        new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
-
-    /// <summary>
-    /// Identifies the IsUnbounded attached property.
-    /// </summary>
-    public static readonly DependencyProperty IsUnboundedProperty = DependencyProperty.RegisterAttached(
-        "IsUnbounded",
-        typeof(bool),
-        typeof(Ripple),
-        new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
-
     /// <summary>
     /// Identifies the FrameRate attached property.
     /// </summary>
@@ -93,6 +64,12 @@ public class Ripple : ContentControl
         DefaultStyleKeyProperty.OverrideMetadata(
             typeof(Ripple),
             new FrameworkPropertyMetadata(typeof(Ripple)));
+        
+        InteractionAssist.IsRippleEnabledProperty.OverrideMetadata(
+            typeof(Ripple),
+            new FrameworkPropertyMetadata(
+                defaultValue: true,
+                propertyChangedCallback: IsRippleEnabledAttachedPropertyChanged));
     }
 
     /// <summary>
@@ -117,80 +94,13 @@ public class Ripple : ContentControl
     }
 
     /// <summary>
-    /// Sets the value of the <see cref="IsAnimatedProperty"/> attached property for a specified dependency object.
-    /// </summary>
-    /// <param name="element">
-    /// The dependency object for which to set the value of the <see cref="IsAnimatedProperty"/> property.
-    /// </param>
-    /// <param name="value">The new value to set the property to.</param>
-    public static void SetIsAnimated(DependencyObject element, bool value) =>
-        element.SetValue(IsAnimatedProperty, value);
-
-    /// <summary>
-    /// Gets the value of the <see cref="IsAnimatedProperty"/> attached property for a specified dependency object.
-    /// </summary>
-    /// <param name="element">
-    /// The dependency object for which to retrieve the value of the <see cref="IsAnimatedProperty"/> property.
-    /// </param>
-    /// <returns>
-    /// The current value of the <see cref="IsAnimatedProperty"/> attached property on the specified dependency object.
-    /// </returns>
-    public static bool GetIsAnimated(DependencyObject element) =>
-        (bool)element.GetValue(IsAnimatedProperty);
-
-    /// <summary>
-    /// Sets the value of the <see cref="IsCenteredProperty"/> attached property for a specified dependency object.
-    /// </summary>
-    /// <param name="element">
-    /// The dependency object for which to set the value of the <see cref="IsCenteredProperty"/> property.
-    /// </param>
-    /// <param name="value">The new value to set the property to.</param>
-    public static void SetIsCentered(DependencyObject element, bool value) =>
-        element.SetValue(IsCenteredProperty, value);
-
-    /// <summary>
-    /// Gets the value of the <see cref="IsCenteredProperty"/> attached property for a specified dependency object.
-    /// </summary>
-    /// <param name="element">
-    /// The dependency object for which to retrieve the value of the <see cref="IsCenteredProperty"/> property.
-    /// </param>
-    /// <returns>
-    /// The current value of the <see cref="IsCenteredProperty"/> attached property on the specified dependency object.
-    /// </returns>
-    public static bool GetIsCentered(DependencyObject element) =>
-        (bool)element.GetValue(IsCenteredProperty);
-
-    /// <summary>
-    /// Sets the value of the <see cref="IsUnboundedProperty"/> attached property for a specified dependency object.
-    /// </summary>
-    /// <param name="element">
-    /// The dependency object for which to set the value of the <see cref="IsUnboundedProperty"/> property.
-    /// </param>
-    /// <param name="value">The new value to set the property to.</param>
-    public static void SetIsUnbounded(DependencyObject element, bool value) =>
-        element.SetValue(IsUnboundedProperty, value);
-
-    /// <summary>
-    /// Gets the value of the <see cref="IsUnboundedProperty"/> attached property for a specified dependency object.
-    /// </summary>
-    /// <param name="element">
-    /// The dependency object for which to retrieve the value of the <see cref="IsUnboundedProperty"/> property.
-    /// </param>
-    /// <returns>
-    /// The current value of the <see cref="IsUnboundedProperty"/> attached property on the specified dependency object.
-    /// </returns>
-    public static bool GetIsUnbounded(DependencyObject element) =>
-        (bool)element.GetValue(IsUnboundedProperty);
-
-    /// <summary>
     /// Sets the value of the <see cref="FrameRateProperty"/> attached property for a specified dependency object.
     /// </summary>
     /// <param name="element">
     /// The dependency object for which to set the value of the <see cref="FrameRateProperty"/> property.
     /// </param>
     /// <param name="value">The new value to set the property to.</param>
-    public static void SetFrameRate(DependencyObject element, int? value) =>
-        element.SetValue(FrameRateProperty, value);
+    public static void SetFrameRate(DependencyObject element, int? value) => element.SetValue(FrameRateProperty, value);
 
     /// <summary>
     /// Gets the value of the <see cref="FrameRateProperty"/> attached property for a specified dependency object.
@@ -201,8 +111,7 @@ public class Ripple : ContentControl
     /// <returns>
     /// The current value of the <see cref="FrameRateProperty"/> attached property on the specified dependency object.
     /// </returns>
-    public static int? GetFrameRate(DependencyObject element) =>
-        (int?)element.GetValue(FrameRateProperty);
+    public static int? GetFrameRate(DependencyObject element) => (int?)element.GetValue(FrameRateProperty);
 
     public override void OnApplyTemplate()
     {
@@ -214,7 +123,7 @@ public class Ripple : ContentControl
         ellipse.RenderTransformOrigin = new Point(0.5, 0.5);
         ellipse.RenderTransform = new ScaleTransform(0.0, 0.0);
 
-        if (GetIsAnimated(this))
+        if (InteractionAssist.GetIsRippleEnabled(this))
         {
             CreateAnimations();
         }
@@ -230,14 +139,14 @@ public class Ripple : ContentControl
 
     internal void Start(bool keep = false)
     {
-        if (!GetIsAnimated(this))
+        if (!InteractionAssist.GetIsRippleEnabled(this))
         {
             return;
         }
 
         keepState = keep;
 
-        var origin = GetIsCentered(this)
+        var origin = InteractionAssist.GetIsRippleCentered(this)
             ? new Point(ActualWidth * 0.5, ActualHeight * 0.5)
             : Mouse.GetPosition(this);
 
@@ -449,7 +358,7 @@ public class Ripple : ContentControl
 
     private void StopAnimation(Storyboard? animation) => animation?.Stop(ellipse);
 
-    private static void IsEnabledAttachedPropertyChanged(
+    private static void IsRippleEnabledAttachedPropertyChanged(
         DependencyObject element,
         DependencyPropertyChangedEventArgs e)
     {
