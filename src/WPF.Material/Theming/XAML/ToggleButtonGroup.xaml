@@ -81,6 +81,7 @@
         <Setter Property="Orientation" Value="Horizontal" />
         <Setter Property="IsMultiSelect" Value="False" />
         <Setter Property="RequireSelection" Value="False" />
+        <Setter Property="IsUniformWidth" Value="True" />
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
