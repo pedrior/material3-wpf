@@ -7,7 +7,7 @@ namespace WPF.Material.Controls;
 /// next row at the edge of the containing box. It supports horizontal content alignment, horizontal and vertical
 /// spacing between children.
 /// </summary>
-public class WrapPanel : Panel
+public class AlignableWrapPanel : Panel
 {
     /// <summary>
     /// Identifies the <see cref="HorizontalContentAlignment"/> dependency property.
@@ -15,7 +15,7 @@ public class WrapPanel : Panel
     public static readonly DependencyProperty HorizontalContentAlignmentProperty = DependencyProperty.Register(
         nameof(HorizontalContentAlignment),
         typeof(HorizontalAlignment),
-        typeof(WrapPanel),
+        typeof(AlignableWrapPanel),
         new FrameworkPropertyMetadata(HorizontalAlignment.Center, FrameworkPropertyMetadataOptions.AffectsArrange));
 
     /// <summary>
@@ -24,7 +24,7 @@ public class WrapPanel : Panel
     public static readonly DependencyProperty HorizontalSpacingProperty = DependencyProperty.Register(
         nameof(HorizontalSpacing),
         typeof(double),
-        typeof(WrapPanel),
+        typeof(AlignableWrapPanel),
         new FrameworkPropertyMetadata(
             default(double),
             FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure,
@@ -37,7 +37,7 @@ public class WrapPanel : Panel
     public static readonly DependencyProperty VerticalSpacingProperty = DependencyProperty.Register(
         nameof(VerticalSpacing),
         typeof(double),
-        typeof(WrapPanel),
+        typeof(AlignableWrapPanel),
         new FrameworkPropertyMetadata(
             default(double),
             FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure,
@@ -45,13 +45,13 @@ public class WrapPanel : Panel
             CoerceSpacing));
 
     /// <summary>
-    /// Initializes static members of the <see cref="WrapPanel"/> class.
+    /// Initializes static members of the <see cref="AlignableWrapPanel"/> class.
     /// </summary>
-    static WrapPanel()
+    static AlignableWrapPanel()
     {
         DefaultStyleKeyProperty.OverrideMetadata(
-            typeof(WrapPanel),
-            new FrameworkPropertyMetadata(typeof(WrapPanel)));
+            typeof(AlignableWrapPanel),
+            new FrameworkPropertyMetadata(typeof(AlignableWrapPanel)));
     }
 
     /// <summary>
