@@ -90,14 +90,16 @@ public class WrapPanel : Panel
 
     protected override Size MeasureOverride(Size constraint)
     {
+        var children = InternalChildren;
+        var childrenCount = children.Count;
+        
         var rowWidth = 0.0;
         var rowHeight = 0.0;
 
         var width = 0.0;
         var height = 0.0;
-
-        var children = InternalChildren;
-        for (var index = 0; index < children.Count; index++)
+        
+        for (var index = 0; index < childrenCount; index++)
         {
             var child = children[index];
 
@@ -140,15 +142,17 @@ public class WrapPanel : Panel
 
     protected override Size ArrangeOverride(Size constraint)
     {
+        var children = InternalChildren;
+        var childrenCount = children.Count;
+        
         var rowWidth = 0.0;
         var rowHeight = 0.0;
         
         var verticalOffset = 0.0;
 
         var firstChildInRowIndex = 0;
-
-        var children = InternalChildren;
-        for (var index = 0; index < children.Count; index++)
+        
+        for (var index = 0; index < childrenCount; index++)
         {
             var childSize = children[index].DesiredSize;
             var horizontalGap = rowWidth > 0 ? HorizontalGap : 0.0;
@@ -180,7 +184,7 @@ public class WrapPanel : Panel
         }
 
         // Arrange the final row
-        if (firstChildInRowIndex < children.Count)
+        if (firstChildInRowIndex < childrenCount)
         {
             ArrangeRow(
                 verticalOffset,

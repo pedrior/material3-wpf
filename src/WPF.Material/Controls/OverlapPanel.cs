@@ -16,12 +16,15 @@ public class OverlapPanel : Panel
 
     protected override Size MeasureOverride(Size constraints)
     {
+        var children = InternalChildren;
+        var childrenCount = children.Count;
+        
         var width = 0.0;
         var height = 0.0;
 
-        for (var i = 0; i < Children.Count; i++)
+        for (var i = 0; i < childrenCount; i++)
         {
-            var child = Children[i];
+            var child = children[i];
             
             child.Measure(constraints);
             
@@ -36,9 +39,12 @@ public class OverlapPanel : Panel
 
     protected override Size ArrangeOverride(Size constraints)
     {
-        for (var i = 0; i < Children.Count; i++)
+        var children = InternalChildren;
+        var childrenCount = children.Count;
+        
+        for (var i = 0; i < childrenCount; i++)
         {
-            var child = Children[i];
+            var child = children[i];
             
             child.Arrange(new Rect(0.0, 0.0, constraints.Width, constraints.Height));
         }

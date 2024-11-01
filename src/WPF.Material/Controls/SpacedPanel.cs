@@ -182,13 +182,15 @@ public class SpacedPanel : Panel
 
     protected override Size MeasureOverride(Size availableSize)
     {
-        var children = Children;
+        var children = InternalChildren;
+        var childrenCount = children.Count;
+        
         var spacing = Spacing;
         var orientation = Orientation;
         var joinItemBorders = JoinItemBorders && spacing is 0.0;
         var itemBorderThickness = ItemBorderThickness;
 
-        if (children.Count is 0)
+        if (childrenCount is 0)
         {
             return Size.Empty;
         }
@@ -204,7 +206,7 @@ public class SpacedPanel : Panel
         totalNonStretchedWidth = 0.0;
         totalNonStretchedHeight = 0.0;
 
-        for (var i = 0; i < children.Count; i++)
+        for (var i = 0; i < childrenCount; i++)
         {
             var child = children[i];
 
@@ -248,11 +250,11 @@ public class SpacedPanel : Panel
         }
         
         // The total spacing between children
-        var totalSpacing = spacing * (children.Count - 1);
+        var totalSpacing = spacing * (childrenCount - 1);
         
         // The total thickness of the borders between children
         var totalJoinedBorderThickness = joinItemBorders
-            ? itemBorderThickness * (children.Count - 1)
+            ? itemBorderThickness * (childrenCount - 1)
             : 0.0;
 
         if (orientation is Orientation.Horizontal)
@@ -264,7 +266,7 @@ public class SpacedPanel : Panel
             {
                 totalWidth = Math.Max(
                     totalWidth,
-                    maxChildWidth * children.Count + totalSpacing - totalJoinedBorderThickness);
+                    maxChildWidth * childrenCount + totalSpacing - totalJoinedBorderThickness);
             }
             
             // Adjust the total non-stretched width to account for the borders between children.
@@ -279,7 +281,7 @@ public class SpacedPanel : Panel
             {
                 totalHeight = Math.Max(
                     totalHeight,
-                    maxChildHeight * children.Count + totalSpacing - totalJoinedBorderThickness);
+                    maxChildHeight * childrenCount + totalSpacing - totalJoinedBorderThickness);
             }
             
             // Adjust the total non-stretched height to account for the borders between children.
@@ -291,13 +293,15 @@ public class SpacedPanel : Panel
 
     protected override Size ArrangeOverride(Size finalSize)
     {
-        var children = Children;
+        var children = InternalChildren;
+        var childrenCount = children.Count;
+        
         var spacing = Math.Abs(Spacing);
         var orientation = Orientation;
         var joinItemBorders = JoinItemBorders && spacing is 0.0;
         var itemBorderThickness = ItemBorderThickness;
 
-        if (children.Count is 0)
+        if (childrenCount is 0)
         {
             return finalSize;
         }
@@ -306,7 +310,7 @@ public class SpacedPanel : Panel
         var offsetX = 0.0;
         var offsetY = 0.0;
 
-        var totalSpacing = spacing * (children.Count - 1);
+        var totalSpacing = spacing * (childrenCount - 1);
 
         // Calculate the remaining width and height after arranging the non-stretched children.
         var remainingWidth = finalSize.Width - totalNonStretchedWidth - totalSpacing;
@@ -316,7 +320,7 @@ public class SpacedPanel : Panel
         var stretchableChildWidth = stretchableChildrenCount > 0 ? remainingWidth / stretchableChildrenCount : 0.0;
         var stretchableChildHeight = stretchableChildrenCount > 0 ? remainingHeight / stretchableChildrenCount : 0.0;
 
-        for (var i = 0; i < children.Count; i++)
+        for (var i = 0; i < childrenCount; i++)
         {
             var child = children[i];
             var childSize = child.DesiredSize;
@@ -337,7 +341,7 @@ public class SpacedPanel : Panel
                 offsetX += Math.Round(childWidth + spacing);
 
                 // Adjust the offset to join the borders of the items.
-                if (joinItemBorders && i < children.Count - 1)
+                if (joinItemBorders && i < childrenCount - 1)
                 {
                     offsetX = Math.Round(offsetX) - itemBorderThickness;
                 }
@@ -358,7 +362,7 @@ public class SpacedPanel : Panel
                 offsetY += Math.Round(childHeight + spacing);
 
                 // Adjust the offset to join the borders of the items.
-                if (joinItemBorders && i < children.Count - 1)
+                if (joinItemBorders && i < childrenCount - 1)
                 {
                     offsetY = Math.Round(offsetY) - itemBorderThickness;
                 }
