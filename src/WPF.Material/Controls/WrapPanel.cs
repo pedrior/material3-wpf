@@ -4,8 +4,8 @@ namespace WPF.Material.Controls;
 
 /// <summary>
 /// Represents a panel that positions child elements in sequential position from left to right, breaking content to the
-/// next row at the edge of the containing box. It supports horizontal alignment, horizontal gap between children and
-/// vertical gap between rows.
+/// next row at the edge of the containing box. It supports horizontal content alignment, horizontal and vertical
+/// spacing between children.
 /// </summary>
 public class WrapPanel : Panel
 {
@@ -19,30 +19,30 @@ public class WrapPanel : Panel
         new FrameworkPropertyMetadata(HorizontalAlignment.Center, FrameworkPropertyMetadataOptions.AffectsArrange));
 
     /// <summary>
-    /// Identifies the <see cref="HorizontalGap"/> dependency property.
+    /// Identifies the <see cref="HorizontalSpacing"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty HorizontalGapProperty = DependencyProperty.Register(
-        nameof(HorizontalGap),
+    public static readonly DependencyProperty HorizontalSpacingProperty = DependencyProperty.Register(
+        nameof(HorizontalSpacing),
         typeof(double),
         typeof(WrapPanel),
         new FrameworkPropertyMetadata(
             default(double),
             FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure,
             null,
-            CoerceGap));
+            CoerceSpacing));
 
     /// <summary>
-    /// Identifies the <see cref="VerticalGap"/> dependency property.
+    /// Identifies the <see cref="VerticalSpacing"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty VerticalGapProperty = DependencyProperty.Register(
-        nameof(VerticalGap),
+    public static readonly DependencyProperty VerticalSpacingProperty = DependencyProperty.Register(
+        nameof(VerticalSpacing),
         typeof(double),
         typeof(WrapPanel),
         new FrameworkPropertyMetadata(
             default(double),
             FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsMeasure,
             null,
-            CoerceGap));
+            CoerceSpacing));
 
     /// <summary>
     /// Initializes static members of the <see cref="WrapPanel"/> class.
@@ -67,25 +67,25 @@ public class WrapPanel : Panel
     }
 
     /// <summary>
-    /// Gets or sets the horizontal gap between children.
+    /// Gets or sets the horizontal spacing between children.
     /// </summary>
     [Bindable(true)]
     [Category(UICategory.Layout)]
-    public double HorizontalGap
+    public double HorizontalSpacing
     {
-        get => (double)GetValue(HorizontalGapProperty);
-        set => SetValue(HorizontalGapProperty, value);
+        get => (double)GetValue(HorizontalSpacingProperty);
+        set => SetValue(HorizontalSpacingProperty, value);
     }
 
     /// <summary>
-    /// Gets or sets the vertical gap between rows.
+    /// Gets or sets the vertical spacing between children.
     /// </summary>
     [Bindable(true)]
     [Category(UICategory.Layout)]
-    public double VerticalGap
+    public double VerticalSpacing
     {
-        get => (double)GetValue(VerticalGapProperty);
-        set => SetValue(VerticalGapProperty, value);
+        get => (double)GetValue(VerticalSpacingProperty);
+        set => SetValue(VerticalSpacingProperty, value);
     }
 
     protected override Size MeasureOverride(Size constraint)
@@ -108,18 +108,18 @@ public class WrapPanel : Panel
 
             var childSize = child.DesiredSize;
 
-            // Add horizontal gap between children
-            var horizontalGap = rowWidth > 0.0 ? HorizontalGap : 0.0;
+            // Add horizontal spacing between children
+            var horizontalSpacing = rowWidth > 0.0 ? HorizontalSpacing : 0.0;
 
             // Check if the current row has enough space for the next child
-            if (rowWidth + childSize.Width + horizontalGap > constraint.Width)
+            if (rowWidth + childSize.Width + horizontalSpacing > constraint.Width)
             {
-                // Add vertical gap between rows
-                var verticalGap = index > 0 ? VerticalGap : 0.0;
+                // Add vertical spacing between rows
+                var verticalSpacing = index > 0 ? VerticalSpacing : 0.0;
 
                 // Row exceeded available width, move to the next row and update total size
                 width = Math.Max(rowWidth, width);
-                height += rowHeight + verticalGap;
+                height += rowHeight + verticalSpacing;
 
                 // Start a new row with the moved child
                 rowWidth = childSize.Width;
@@ -128,7 +128,7 @@ public class WrapPanel : Panel
             else
             {
                 // Accumulate the width and height for the current row
-                rowWidth += childSize.Width + horizontalGap;
+                rowWidth += childSize.Width + horizontalSpacing;
                 rowHeight = Math.Max(childSize.Height, rowHeight);
             }
         }
@@ -155,10 +155,10 @@ public class WrapPanel : Panel
         for (var index = 0; index < childrenCount; index++)
         {
             var childSize = children[index].DesiredSize;
-            var horizontalGap = rowWidth > 0 ? HorizontalGap : 0.0;
+            var horizontalSpacing = rowWidth > 0 ? HorizontalSpacing : 0.0;
 
             // Check if the current row has enough space for the next child
-            if (rowWidth + childSize.Width + horizontalGap > constraint.Width)
+            if (rowWidth + childSize.Width + horizontalSpacing > constraint.Width)
             {
                 // Arrange the current row and move to the next row
                 ArrangeRow(
@@ -171,14 +171,14 @@ public class WrapPanel : Panel
 
                 rowWidth = childSize.Width;
                 rowHeight = childSize.Height;
-                verticalOffset += rowHeight + VerticalGap;
+                verticalOffset += rowHeight + VerticalSpacing;
 
                 firstChildInRowIndex = index;
             }
             else
             {
                 // Accumulate the width and height for the current row
-                rowWidth += childSize.Width + horizontalGap;
+                rowWidth += childSize.Width + horizontalSpacing;
                 rowHeight = Math.Max(childSize.Height, rowHeight);
             }
         }
@@ -219,14 +219,14 @@ public class WrapPanel : Panel
             // Arrange the child
             child.Arrange(new Rect(x, y, childWidth, rowHeight));
 
-            // Add horizontal gap between children unless it's the last child in the row
-            var horizontalGap = index < childCount - 1 ? HorizontalGap : 0.0;
+            // Add horizontal spacing between children unless it's the last child in the row
+            var horizontalSpacing = index < childCount - 1 ? HorizontalSpacing : 0.0;
 
             // Increment horizontal offset,
-            x += childWidth + horizontalGap;
+            x += childWidth + horizontalSpacing;
         }
     }
     
-    private static object CoerceGap(DependencyObject element, object value) => 
+    private static object CoerceSpacing(DependencyObject element, object value) => 
         Math.Max(0.0, (double)value);
 }
