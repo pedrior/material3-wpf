@@ -262,7 +262,9 @@ public class SpacedPanel : Panel
             // Ensure the panel has enough width to arrange the children.
             if (stretchableChildrenCount > 0)
             {
-                totalWidth = Math.Max(totalWidth, maxChildWidth * children.Count);
+                totalWidth = Math.Max(
+                    totalWidth,
+                    maxChildWidth * children.Count + totalSpacing - totalJoinedBorderThickness);
             }
             
             // Adjust the total non-stretched width to account for the borders between children.
@@ -275,7 +277,9 @@ public class SpacedPanel : Panel
             // Ensure the panel has enough height to arrange the children.
             if (stretchableChildrenCount > 0)
             {
-                totalHeight = Math.Max(totalHeight, maxChildHeight * children.Count);
+                totalHeight = Math.Max(
+                    totalHeight,
+                    maxChildHeight * children.Count + totalSpacing - totalJoinedBorderThickness);
             }
             
             // Adjust the total non-stretched height to account for the borders between children.
